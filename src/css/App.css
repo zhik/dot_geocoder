@@ -1,0 +1,18 @@
+body{
+  padding: 2em;
+}
+
+.logo{
+
+}
+
+.file-upload{
+  margin: 2em;
+  text-align: center;
+}
+
+.table-preview{
+  margin: 2em;
+  max-height: 40vh;
+  overflow-y: auto;
+}

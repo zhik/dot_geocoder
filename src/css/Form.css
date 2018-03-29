@@ -1,0 +1,13 @@
+.panel{
+    display: flex;
+    margin: 2em;
+}
+
+.left-panel{
+    flex-grow: 0;
+    flex-shrink: 0; 
+}
+
+.right-panel{
+    margin-left: 2em;
+}
