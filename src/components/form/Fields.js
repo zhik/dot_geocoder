@@ -1,6 +1,6 @@
 import React from 'react';
 import options from './options';
-import { Form, Input, Select, Popup } from 'semantic-ui-react'
+import { Form, Select, Popup } from 'semantic-ui-react'
 
 const Fields = ({ header,selectedType, fields, _changeField }) => {
     const optionsfields = options[selectedType].fields;

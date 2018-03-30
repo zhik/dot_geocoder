@@ -18,7 +18,7 @@ const options = {
                 comments: 'Valid Values provided in the Common Request Parameters section (Required if ZipCode not given)'
             },
             {
-                name: 'Street',
+                name: 'ZipCode',
                 required : false,
                 comments: 'Standard USPS 5-digit zip code or zip+4. Must be a valid zip code for an area within New York City limits. (	Required if Borough not given)'
             },

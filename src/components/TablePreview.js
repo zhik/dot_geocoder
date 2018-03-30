@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Icon } from 'semantic-ui-react'
+import { Table } from 'semantic-ui-react'
 
 const TablePreview = ({header, body}) => {
     if(!header.length && !body.length) return null;
@@ -12,9 +12,9 @@ const TablePreview = ({header, body}) => {
 
     const tableBody = body.slice(0,preview).map((row,i)=> {
         return(
-            <Table.Row key={`body-${i}`} positive>
-                <Table.Cell key={`body-${i}-i`}>{i+1}</Table.Cell>
-                {row.map((cell,i2) => <Table.Cell key={`body-${i}-${i2}`}>{cell}</Table.Cell>)}
+            <Table.Row key={`pbody-${i}`}>
+                <Table.Cell key={`pbody-${i}-i`}>{i+1}</Table.Cell>
+                {row.map((cell,i2) => <Table.Cell key={`pbody-${i}-${i2}`}>{cell}</Table.Cell>)}
             </Table.Row>       
         );
     });
@@ -25,9 +25,9 @@ const TablePreview = ({header, body}) => {
             <h3>Preview</h3>
             <Table celled striped selectable compact>
                 <Table.Header>
-                    <Table.Row key={`header`}>
-                        <Table.HeaderCell  key={`header-index`}>#</Table.HeaderCell >
-                        {header.map((cell,i2) => <Table.HeaderCell key={`header-${i2}`}><Icon name='attention' />{cell}</Table.HeaderCell>)}
+                    <Table.Row key={`pheader`}>
+                        <Table.HeaderCell  key={`pheader-index`}>#</Table.HeaderCell >
+                        {header.map((cell,i2) => <Table.HeaderCell key={`pheader-${i2}`}>{cell}</Table.HeaderCell>)}
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>

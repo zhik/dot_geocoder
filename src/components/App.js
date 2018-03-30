@@ -10,7 +10,9 @@ import queryGeocoder from '../helpers/queryGeocoder';
 import Form from './form/Form';
 import FileUpload from './FileUpload';
 import TablePreview from './TablePreview';
-import TableResult from './TableResult'
+import TableResult from './TableResult';
+import ColumnsPicker from './ColumnsPicker';
+
 
 class App extends Component {
     state = {
@@ -24,7 +26,8 @@ class App extends Component {
           errorsCount: 0,
           finshed: false,
         },
-        fileError: false
+        fileError: false,
+        exportColumns: {}
     }
 
   
@@ -93,35 +96,48 @@ class App extends Component {
             status.resultsCount++
             this.setState({ status })
 
-            return {...data, err: false, index: i}
+            return {...data, error: false, rowIndex: i}
           })
-          .catch(err => {
+          .catch(error => {
             const status = this.state.status;
             status.resultsCount++
             status.errorsCount++
             this.setState({ status })
 
-            return {err, index: i}
+            return {error , rowIndex: i}
           })
       }))
         .then(results => {
           const status = this.state.status;
           status.start = false;
           status.finshed = true;
-          this.setState({
-            status,
-            results
-          });
+
+        //default enable header columns and error
+        const exportColumns = {};
+        this.state.header.map(i => exportColumns[i] = true);
+        exportColumns.error = true;
+        
+        this.setState({
+          status,
+          results,
+          exportColumns
+        });
+
         })
 
     }
 
+    _updateExportColumn = (column) => {
+      const exportColumns = this.state.exportColumns;
+      exportColumns[column] = !exportColumns[column];
+      this.setState({exportColumns})
+    }
 
   render() {
     return (
       <div>
         <Header as='h2' attached='top'>
-            <img className='logo'src={logo}/> 
+            <img className='logo' src={logo} alt='dot-logo'/> 
             web batch geocoder
         </Header>
         <FileUpload 
@@ -139,13 +155,21 @@ class App extends Component {
           header={this.state.header} 
           body={this.state.body}
         />
+
+        <ColumnsPicker 
+          header={this.state.header}
+          results={this.state.results}
+          exportColumns={this.state.exportColumns}
+          _updateExportColumn={this._updateExportColumn}
+        />
+
         <TableResult 
           header={this.state.header} 
           body={this.state.body}
           results={this.state.results}
+          exportColumns={this.state.exportColumns}
         />
-        {/* <TableError />
-        <Export /> */}
+        
       </div>
     );
   }

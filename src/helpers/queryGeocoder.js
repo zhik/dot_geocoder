@@ -13,7 +13,7 @@ const queryGeocoder = (type, params) => {
                 .then(res => res.json())
                 .then(data => {
                     //check for errors
-                    if (data.ErrorMessage) reject(data.ErrorMessage);
+                    if (data.ErrorMessage) reject(data.ErrorDetails[0]);
                     if (data.GeoSupportError) reject(data.GeoSupportError);
 
                     

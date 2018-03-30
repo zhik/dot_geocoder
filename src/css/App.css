@@ -12,7 +12,23 @@ body{
 }
 
 .table-preview{
+  padding: 1em;
   margin: 2em;
   max-height: 40vh;
   overflow-y: auto;
+}
+
+.picker{
+  padding: 1em;
+  margin: 2em;
+  background-color: #e5f2e5;
+}
+
+.picker div{
+  padding: 1em;
+}
+
+.export{
+  padding: 1em;
+  margin:2em;
 }
