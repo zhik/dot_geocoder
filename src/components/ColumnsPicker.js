@@ -13,7 +13,7 @@ class ColumnsPicker extends Component {
         if(!this.props.results.length) return null;
 
     
-        const sample = this.props.results.find(i => !i.error);
+        const sample = this.props.results.find(i => !i.error) || [];
         const rcolumns = flatten(sample, { maxDepth: 2 })
         const frcolumns = Object.keys(rcolumns).filter(i => typeof(rcolumns[i]) !== 'object');
             
