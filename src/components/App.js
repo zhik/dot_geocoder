@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import '../css/App.css';
 import 'semantic-ui-css/semantic.min.css';
 import logo from '../css/dot_logo_web.png';
-import { Header } from 'semantic-ui-react'
+import { Header, Label } from 'semantic-ui-react'
 
 import readFile from '../helpers/readFile';
 import queryGeocoder from '../helpers/queryGeocoder';
@@ -138,7 +138,11 @@ class App extends Component {
       <div>
         <Header as='h2' attached='top'>
             <img className='logo' src={logo} alt='dot-logo'/> 
-            web batch geocoder
+            web batch geocoder 
+            <Label color='yellow'>
+              test ver. 
+              <Label.Detail>very buggy</Label.Detail>
+            </Label>
         </Header>
         <FileUpload 
           _onFileChange={this._onFileChange} 
