@@ -1,4 +1,4 @@
-import { download } from 'shp-write';
+import { download } from 'shp-write'; //copy or link folder (ln -s src/helpers/shp_write node_modules/shp-write)
 
 const exportShapefile = (header, body, epsg) => {
     //if( !((header.indexOf("Longitude") > -1 && header.indexOf("Latitude") > -1 ))) return null
