@@ -8,7 +8,8 @@ import Export from './Export';
 
 class TableResult extends Component {
 
-    _downloadExcel = () => {
+    _downloadExcel = event => {
+        event.preventDefault();
         const {header,body,results,exportColumns} = this.props;
 
         //filter for only true exportColumns
@@ -31,7 +32,7 @@ class TableResult extends Component {
         exportExcel([exportColumnsTrue, ...resultsBody]);
     }
 
-    _downloadShape = () => {
+    _downloadShape = (epsg) => {
         const {header,body,results,exportColumns} = this.props;
 
         //filter for only true exportColumns
@@ -52,7 +53,7 @@ class TableResult extends Component {
             return newRow
         })
 
-        exportShapefile(exportColumnsTrue, resultsBody)
+        exportShapefile(exportColumnsTrue, resultsBody, epsg)
     }
 
 
@@ -85,6 +86,7 @@ class TableResult extends Component {
                     key={`pbody-${i}`} 
                     positive={!results[i].error}
                     negative={Boolean(results[i].error)}
+                    onClick={() => Boolean(results[i].error) ? this.props._handleEditorOpen(row): null}
                 >
                     <Table.Cell key={`pbody-${i}-i`}>{i+1}</Table.Cell>
                     {row.map((cell,i2) => <Table.Cell key={`pbody-${i}-${i2}`}>{cell}</Table.Cell>)}

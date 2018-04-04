@@ -3,7 +3,7 @@ import { Form, Input,Message } from 'semantic-ui-react'
 
 const FileUpload = ({_onFileChange, fileError}) => {
     return(
-        <div className='file-upload'>
+        <div >
             <Form.Field required>
                 <Input input='file' onChange={_onFileChange}/>
             </Form.Field>

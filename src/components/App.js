@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import '../css/App.css';
 import 'semantic-ui-css/semantic.min.css';
 import logo from '../css/dot_logo_web.png';
-import { Header, Label } from 'semantic-ui-react'
+import { Header, Label, Popup, Icon } from 'semantic-ui-react'
 
 import readFile from '../helpers/readFile';
 import queryGeocoder from '../helpers/queryGeocoder';
@@ -13,6 +13,7 @@ import TablePreview from './TablePreview';
 import TableResult from './TableResult';
 import ColumnsPicker from './ColumnsPicker';
 
+import Editor from './editor/Editor';
 
 class App extends Component {
     state = {
@@ -27,7 +28,9 @@ class App extends Component {
           finshed: false,
         },
         fileError: false,
-        exportColumns: {}
+        exportColumns: {},
+        isEditorOpen: false,
+        editRow: []
     }
 
   
@@ -116,6 +119,8 @@ class App extends Component {
         const exportColumns = {};
         this.state.header.map(i => exportColumns[i] = true);
         exportColumns.error = true;
+        exportColumns.XCoordinate = true;
+        exportColumns.YCoordinate = true;
         
         this.setState({
           status,
@@ -133,6 +138,17 @@ class App extends Component {
       this.setState({exportColumns})
     }
 
+    _handleEditorClose = () => {
+      this.setState({isEditorOpen: false});
+    }
+
+    _handleEditorOpen = row => {
+      this.setState({
+        isEditorOpen: true,
+        editRow: row
+      })
+    }
+
   render() {
     return (
       <div>
@@ -140,14 +156,21 @@ class App extends Component {
             <img className='logo' src={logo} alt='dot-logo'/> 
             web batch geocoder 
             <Label color='yellow'>
-              test ver. 
+              alpha v0.1
               <Label.Detail>very buggy</Label.Detail>
             </Label>
         </Header>
-        <FileUpload 
-          _onFileChange={this._onFileChange} 
-          fileError={this.state.fileError}
-        />
+
+        <div className="help">
+          <FileUpload 
+            _onFileChange={this._onFileChange} 
+            fileError={this.state.fileError}
+          />
+          <Popup 
+            trigger={<Icon name='question circle outline' />}
+            content='choose a file, then select a function'
+          />
+        </div>
         <Form 
           header={this.state.header} 
           fields={this.state.fields}
@@ -172,6 +195,14 @@ class App extends Component {
           body={this.state.body}
           results={this.state.results}
           exportColumns={this.state.exportColumns}
+          _handleEditorOpen={this._handleEditorOpen}
+        />
+
+        <Editor 
+          open={this.state.isEditorOpen} 
+          _handleEditorClose={this._handleEditorClose} 
+          row={this.state.editRow} 
+          header={this.state.header}
         />
         
       </div>

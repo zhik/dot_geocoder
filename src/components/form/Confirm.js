@@ -7,7 +7,7 @@ const Confirm = ({ _submitForm, status }) => {
             <Button as='div' labelPosition='right' onClick={_submitForm} disabled={status.start}>
                 <Button color='green'>
                     <Icon name='send' />
-                    {status.start? 'sending query' : 'send query'}
+                    {status.start? 'geocoding...' : 'start geocoding'}
                 </Button>
                 <Label as='a' basic color='green' pointing='left'>{status.count}</Label>
                 {
@@ -20,7 +20,7 @@ const Confirm = ({ _submitForm, status }) => {
                 <Message icon>
                     <Icon name='circle notched' loading/>
                     <Message.Content>
-                        <Message.Header>Just one second</Message.Header>
+                        <Message.Header>Just a few seconds</Message.Header>
                             <Message.List>
                                 <Message.Item>{`We are fetching. ${status.resultsCount} out of ${status.count}`}</Message.Item>
                                 {status.errorsCount ? <Message.Item>{`There are ${status.errorsCount} errors`}</Message.Item> : null}

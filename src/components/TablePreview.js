@@ -22,8 +22,8 @@ const TablePreview = ({header, body}) => {
 
     return (
         <div className='table-preview'>
-            <h3>Preview</h3>
-            <Table celled striped selectable compact>
+            <h3>Preview ({preview} of {body.length})</h3>
+            <Table celled striped compact>
                 <Table.Header>
                     <Table.Row key={`pheader`}>
                         <Table.HeaderCell  key={`pheader-index`}>#</Table.HeaderCell >

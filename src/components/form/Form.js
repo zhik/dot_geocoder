@@ -47,7 +47,7 @@ class Form extends Component {
   // handle field changes
   _changeField = (event, data, field) => {
     const fields = this.state.fields
-    fields[field] = data.value !== 'null' ? data.value : null;
+    fields[field] = data.value !== 'empty' ? data.value : null;
     this.setState({ field });
 
     if(this.checkForm()){

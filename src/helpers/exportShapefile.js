@@ -1,15 +1,27 @@
-import { download } from 'shp-write'
+import { download } from 'shp-write';
 
-const exportShapefile = (header, body) => {
-    if( !((header.indexOf("Longitude") > -1 && header.indexOf("Latitude") > -1 ))) return null
+const exportShapefile = (header, body, epsg) => {
+    //if( !((header.indexOf("Longitude") > -1 && header.indexOf("Latitude") > -1 ))) return null
+
+    let x, y;
+    switch(epsg){
+        case 2263:
+            x = 'XCoordinate';
+            y = 'YCoordinate';
+            break;
+        case 4326:
+            x = "Longitude";
+            y = "Latitude";
+            break;
+        default: 
+            x = "Longitude";
+            y = "Latitude";
+    }
 
     //create geojson
     const fc = {
         type: 'FeatureCollection',
-        features: [],
-        options: {
-            folder: 'output',
-        }
+        features: []
     }
 
     fc.features = body.map(row => {
@@ -23,18 +35,27 @@ const exportShapefile = (header, body) => {
             type: 'Feature',
             geometry: {
                 type: 'Point',
-                coordinates: [parseFloat(properties.Longitude) || 0, parseFloat(properties.Latitude) || 0]
+                coordinates: [parseFloat(properties[x]) || undefined, parseFloat(properties[y]) || undefined]
             },
             properties
         }
 
-        return feature
+        return feature;
     })
 
 
     //write to shp.zip
     console.log(fc)
-    download(fc)
+
+    const shp_options = {
+        folder: 'output',
+            types: {
+            point: 'points'
+        },
+        epsg: epsg
+    }
+
+    download(fc , shp_options);
 }
 
 export default exportShapefile;

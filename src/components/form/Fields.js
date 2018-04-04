@@ -9,7 +9,7 @@ const Fields = ({ header,selectedType, fields, _changeField }) => {
         <div>
             <Form>
                 {optionsfields.map((field,i) => {
-                    const headerOptions = ['null', ...header].map((column,i)=> (
+                    const headerOptions = ['empty', ...header].map((column,i)=> (
                         {
                             key: `${column}-${field.name}-${i}`, 
                             text: column,

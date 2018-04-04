@@ -6,9 +6,9 @@ body{
   margin-right: 0.5em;
 }
 
-.file-upload{
+.help{
   margin: 2em;
-  text-align: center;
+  display: flex;
 }
 
 .table-preview{
