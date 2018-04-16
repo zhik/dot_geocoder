@@ -131,6 +131,8 @@ class App extends Component {
         exportColumns.error = true;
         exportColumns.XCoordinate = true;
         exportColumns.YCoordinate = true;
+        exportColumns.Longitude = true;
+        exportColumns.Latitude = true;
         
         this.setState({
           status,

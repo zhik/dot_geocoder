@@ -5,6 +5,7 @@ import { Message } from 'semantic-ui-react'
 
 import L from 'leaflet';
 import TableResult from './App/TableResult';
+import ColumnsPicker from './App/ColumnsPicker';
 
 import {loadFromLocalStorage} from '../helpers/localStorage';
 
@@ -37,7 +38,13 @@ class MapPreview extends Component {
               header, body, results, exportColumns
             });
         }
-      }
+    }
+
+    _updateExportColumn = (column) => {
+        const exportColumns = this.state.exportColumns;
+        exportColumns[column] = !exportColumns[column];
+        this.setState({exportColumns})
+    }
 
     render(){
         const position = [this.state.lat, this.state.lng];
@@ -75,6 +82,13 @@ class MapPreview extends Component {
             <div className='message'>
                 {points.length ? null : <Message negative><Message.Header>No points</Message.Header><p>Please go back to home and geocode something</p></Message>}
             </div>
+
+            <ColumnsPicker 
+                header={this.state.header}
+                results={this.state.results}
+                exportColumns={this.state.exportColumns}
+                _updateExportColumn={this._updateExportColumn}
+            />
 
             <TableResult 
             header={this.state.header} 
