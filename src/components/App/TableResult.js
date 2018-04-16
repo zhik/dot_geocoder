@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Table } from 'semantic-ui-react'
 import { flatten } from 'flat';
 
-import exportExcel from '../helpers/exportExcel';
-import exportShapefile from '../helpers/exportShapefile';
+import exportExcel from '../../helpers/exportExcel';
+import exportShapefile from '../../helpers/exportShapefile';
 import Export from './Export';
 
 class TableResult extends Component {
@@ -86,7 +86,7 @@ class TableResult extends Component {
                     key={`pbody-${i}`} 
                     positive={!results[i].error}
                     negative={Boolean(results[i].error)}
-                    onClick={() => Boolean(results[i].error) ? this.props._handleEditorOpen(row): null}
+                    onClick={() => Boolean(results[i].error) && this.props._handleEditorOpen ? this.props._handleEditorOpen(row): null}
                 >
                     <Table.Cell key={`pbody-${i}-i`}>{i+1}</Table.Cell>
                     {row.map((cell,i2) => <Table.Cell key={`pbody-${i}-${i2}`}>{cell}</Table.Cell>)}

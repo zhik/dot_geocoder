@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import '../css/App.css';
 import 'semantic-ui-css/semantic.min.css';
-import logo from '../css/dot_logo_web.png';
-import { Header, Label, Popup, Icon } from 'semantic-ui-react'
+import { Popup, Icon } from 'semantic-ui-react'
 
 import readFile from '../helpers/readFile';
 import queryGeocoder from '../helpers/queryGeocoder';
+import {saveToLocalStorage, loadFromLocalStorage} from '../helpers/localStorage';
 
+import Navbar from './Navbar';
 import Form from './form/Form';
-import FileUpload from './FileUpload';
-import TablePreview from './TablePreview';
-import TableResult from './TableResult';
-import ColumnsPicker from './ColumnsPicker';
+import FileUpload from './App/FileUpload';
+import TablePreview from './App/TablePreview';
+import TableResult from './App/TableResult';
+import ColumnsPicker from './App/ColumnsPicker';
 
 import Editor from './editor/Editor';
 
@@ -33,7 +34,16 @@ class App extends Component {
         editRow: []
     }
 
-  
+    componentWillMount(){
+      //load up backup data
+      const res = loadFromLocalStorage('res');
+      if(res){
+        const {header, body, results, exportColumns} = res;
+        this.setState({
+          header, body, results, exportColumns
+        });
+      }
+    }
 
     _onFileChange = e => {
         const file = e.target.files[0];
@@ -128,6 +138,12 @@ class App extends Component {
           exportColumns
         });
 
+        //backup results
+        const {header, body} = this.state;
+        saveToLocalStorage('res', {
+          header, body, results, exportColumns
+        });
+
         })
 
     }
@@ -152,14 +168,9 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Header as='h2' attached='top'>
-            <img className='logo' src={logo} alt='dot-logo'/> 
-            web batch geocoder 
-            <Label color='yellow'>
-              alpha v0.1
-              <Label.Detail>very buggy</Label.Detail>
-            </Label>
-        </Header>
+        <Navbar 
+          location={this.props.location.pathname}
+        />
 
         <div className="help">
           <FileUpload 

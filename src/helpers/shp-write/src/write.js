@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 var types = require('./types'),
     dbf = require('dbf'),
     prj = require('./prj'),

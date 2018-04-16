@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 var ext = require('./extent'),
     types = require('./types');
 

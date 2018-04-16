@@ -15,7 +15,7 @@ const getClientEnvironment = require('./env');
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
-const publicPath = paths.servedPath;
+const publicPath = 'http://dotdevgisiis02/react-geocoder/';//paths.servedPath;
 // Some apps do not use client-side routing with pushState.
 // For these, "homepage" can be set to "." to enable relative asset paths.
 const shouldUseRelativeAssetPaths = publicPath === './';
@@ -149,8 +149,9 @@ module.exports = {
             include: paths.appSrc,
             loader: require.resolve('babel-loader'),
             options: {
-              
               compact: true,
+              presets: [require.resolve('babel-preset-react-app')],
+              cacheDirectory: false,
             },
           },
           // The notation here is somewhat confusing.
