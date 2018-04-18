@@ -6,9 +6,9 @@ const TablePreview = ({header, body}) => {
     
     //preview first few
 
-    //default to 15 but if length is less than length
-    let preview = 15;
-    if(body.length < 15) preview = body.length;
+    //default to 5 but if length is less than length
+    let preview = 5;
+    if(body.length < 5) preview = body.length;
 
     const tableBody = body.slice(0,preview).map((row,i)=> {
         return(

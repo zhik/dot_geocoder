@@ -10,12 +10,12 @@ const options = {
             {
                 name: 'Street',
                 required : true,
-                comments: 'Street Name'
+                comments: '(w/o House number) + Street Name'
             },
             {
                 name: 'Borough',
                 required : false,
-                comments: "Valid Values provided in the Common Request Parameters section (Required if ZipCode not given) ['Manhattan','Bronx','Brooklyn','Queens','Staten Island']"
+                comments: "Borough name, number, letter(s) [Required if ZipCode not given]"
             },
             {
                 name: 'ZipCode',
@@ -41,7 +41,7 @@ const options = {
             {
                 name: 'Borough',
                 required : false,
-                comments: "Borough of first cross street or of all cross streets if no other borough parameter is supplied. (Required if NodeId not given) ['Manhattan','Bronx','Brooklyn','Queens','Staten Island']"
+                comments: "Borough name, number, letter(s) of the first cross street or of all cross streets [Required if NodeId not given]"
             },
             {
                 name: 'NodeId',

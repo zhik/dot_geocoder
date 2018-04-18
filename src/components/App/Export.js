@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Popup } from 'semantic-ui-react'
 
-const Export = ({ exportColumns, _downloadExcel, _downloadShape }) => {
+const Export = ({ exportColumns, _downloadExcel, _downloadShape, children }) => {
     //filter for only true exportColumns
     const exportColumnsTrue = Object.keys(exportColumns).filter(i => exportColumns[i]);
 
@@ -43,6 +43,7 @@ const Export = ({ exportColumns, _downloadExcel, _downloadShape }) => {
                 Exports to WGS 84 - Used by most web maps
             </Popup.Content>    
         </Popup>
+        {children}
         </div>
     )
 }

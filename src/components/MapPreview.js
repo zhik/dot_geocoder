@@ -21,11 +21,15 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
 });
 
+const DEFAULT_VIEWPORT = {
+    center: [40.730610, -73.935242],
+    zoom: 10,
+}
+
 class MapPreview extends Component {
+
     state = {
-        lat: 40.730610,
-        lng: -73.935242,
-        zoom: 10,
+        viewport: DEFAULT_VIEWPORT,
         results: []
     }
 
@@ -43,11 +47,23 @@ class MapPreview extends Component {
     _updateExportColumn = (column) => {
         const exportColumns = this.state.exportColumns;
         exportColumns[column] = !exportColumns[column];
-        this.setState({exportColumns})
+        this.setState({exportColumns});
+    }
+
+    zoomToLocation = (location) => {
+
+        if(!location){ 
+            this.setState({viewport: DEFAULT_VIEWPORT});
+        }else{
+            const viewport = {
+                center: location,
+                zoom: 17
+            };
+            this.setState({viewport});
+        }
     }
 
     render(){
-        const position = [this.state.lat, this.state.lng];
         const points = this.state.results.reduce((points,res)=>{
             if(res.Latitude && res.Longitude){
                 points.push({
@@ -63,7 +79,11 @@ class MapPreview extends Component {
                     location={this.props.location.pathname}
                 />
 
-                <Map center={position} zoom={this.state.zoom} className="map">
+                <Map 
+                    zoom={this.state.zoom} 
+                    className="map"
+                    viewport={this.state.viewport}>
+                >
                     <TileLayer
                     attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -91,10 +111,11 @@ class MapPreview extends Component {
             />
 
             <TableResult 
-            header={this.state.header} 
-            body={this.state.body}
-            results={this.state.results}
-            exportColumns={this.state.exportColumns}
+                header={this.state.header} 
+                body={this.state.body}
+                results={this.state.results}
+                exportColumns={this.state.exportColumns}
+                zoomToLocation={this.zoomToLocation}
             />
 
             </div>

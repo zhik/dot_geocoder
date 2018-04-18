@@ -6,6 +6,7 @@ import { Popup, Icon } from 'semantic-ui-react'
 import readFile from '../helpers/readFile';
 import queryGeocoder from '../helpers/queryGeocoder';
 import {saveToLocalStorage, loadFromLocalStorage} from '../helpers/localStorage';
+import fieldHelper from '../helpers/fieldHelper';
 
 import Navbar from './Navbar';
 import Form from './form/Form';
@@ -95,7 +96,8 @@ class App extends Component {
       const queries = this.state.body.map(row => {
         return Object.keys(fieldIndexes).reduce((query, field) => {
           const index = fieldIndexes[field];
-          query[field] = row[index];
+          //helpers for certain fields like borough
+          query[field] = fieldHelper(row[index], field);
           return query;
         },{});
       })

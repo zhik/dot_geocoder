@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table } from 'semantic-ui-react'
+import { Table, Checkbox } from 'semantic-ui-react'
 import { flatten } from 'flat';
 
 import exportExcel from '../../helpers/exportExcel';
@@ -7,6 +7,10 @@ import exportShapefile from '../../helpers/exportShapefile';
 import Export from './Export';
 
 class TableResult extends Component {
+
+    state = {
+        filterError: false
+    }
 
     _downloadExcel = event => {
         event.preventDefault();
@@ -78,29 +82,62 @@ class TableResult extends Component {
             resultColumns.map(i => result[i] ? newRow.push(result[i]) : newRow.push(''));
 
             return newRow
-        })
+        });
+
+        const onRowClick = (row,i) => {
+            if(this.props._handleEditorOpen){
+                if(results[i].error) return this.props._handleEditorOpen(row);     
+            }else if(this.props.zoomToLocation){
+                if(results[i].error) return this.props.zoomToLocation();
+                
+                return this.props.zoomToLocation([parseFloat(results[i].Latitude), parseFloat(results[i].Longitude)]);
+            }else{
+                return null;
+            }
+        }
 
         const tableBody = resultsBody.map((row,i)=> {
-            return(
-                <Table.Row 
-                    key={`pbody-${i}`} 
-                    positive={!results[i].error}
-                    negative={Boolean(results[i].error)}
-                    onClick={() => Boolean(results[i].error) && this.props._handleEditorOpen ? this.props._handleEditorOpen(row): null}
-                >
-                    <Table.Cell key={`pbody-${i}-i`}>{i+1}</Table.Cell>
-                    {row.map((cell,i2) => <Table.Cell key={`pbody-${i}-${i2}`}>{cell}</Table.Cell>)}
-                </Table.Row>       
-            );
+            //case to filter for ONLY errors
+            if(this.state.filterError){
+                if(results[i].error){
+                    return(
+                        <Table.Row 
+                            key={`pbody-${i}`} 
+                            positive={!results[i].error}
+                            negative={Boolean(results[i].error)}
+                            onClick={() => onRowClick(row, i)}
+                        >
+                            <Table.Cell key={`pbody-${i}-i`}>{i+1}</Table.Cell>
+                            {row.map((cell,i2) => <Table.Cell key={`pbody-${i}-${i2}`}>{cell}</Table.Cell>)}
+                        </Table.Row>       
+                    );
+                }else{
+                    return null;
+                }
+            }else{
+                return(
+                    <Table.Row 
+                        key={`pbody-${i}`} 
+                        positive={!results[i].error}
+                        negative={Boolean(results[i].error)}
+                        onClick={() => onRowClick(row, i)}
+                    >
+                        <Table.Cell key={`pbody-${i}-i`}>{i+1}</Table.Cell>
+                        {row.map((cell,i2) => <Table.Cell key={`pbody-${i}-${i2}`}>{cell}</Table.Cell>)}
+                    </Table.Row>       
+                );
+            }
         });
 
 
         return(
             <React.Fragment>
-                <Export _downloadExcel={this._downloadExcel} _downloadShape={this._downloadShape} exportColumns={this.props.exportColumns}/>
+                <Export _downloadExcel={this._downloadExcel} _downloadShape={this._downloadShape} exportColumns={this.props.exportColumns}>
+                    <Checkbox toggle label="Filter Errors" checked={this.state.filterError} onChange={() => this.setState({filterError : !this.state.filterError})}/>
+                </Export>
                 <div className='table-preview'>
                     <h3>Results</h3>
-                    <Table celled striped selectable compact>
+                    <Table celled striped compact>
                         <Table.Header>
                             <Table.Row key={`rheader`}>
                                 <Table.HeaderCell  key={`rheader-index`}>#</Table.HeaderCell >

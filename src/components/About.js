@@ -16,7 +16,7 @@ class About extends Component {
                 <div className="about"> 
                     <h1>Web Batch Geocoder using Location Service Rest API</h1>
                     <p>A web interface for the Location Service Rest API, that allows for easy uploading, viewing and downloading of location data</p>
-                    <p>This project was bootstrapped with <a src="https://github.com/facebookincubator/create-react-app">Create React App</a></p>
+                    <p>This project was bootstrapped with <a href="https://github.com/facebookincubator/create-react-app">Create React App</a></p>
                     
                     <h2>Requirements</h2>
 
