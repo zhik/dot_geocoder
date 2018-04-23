@@ -15,7 +15,6 @@ class TableResult extends Component {
     _downloadExcel = event => {
         event.preventDefault();
         const {header,body,results,exportColumns} = this.props;
-
         //filter for only true exportColumns
         const exportColumnsTrue = Object.keys(exportColumns).filter(i => exportColumns[i]) 
 
@@ -33,7 +32,7 @@ class TableResult extends Component {
 
             return newRow
         })
-        exportExcel([exportColumnsTrue, ...resultsBody]);
+        exportExcel(this.props.fileName, [exportColumnsTrue, ...resultsBody]);
     }
 
     _downloadShape = (epsg) => {
@@ -57,9 +56,8 @@ class TableResult extends Component {
             return newRow
         })
 
-        exportShapefile(exportColumnsTrue, resultsBody, epsg)
+        exportShapefile(this.props.fileName, exportColumnsTrue, resultsBody, epsg);
     }
-
 
     render(){
         const {header,body,results,exportColumns} = this.props;
@@ -86,7 +84,7 @@ class TableResult extends Component {
 
         const onRowClick = (row,i) => {
             if(this.props._handleEditorOpen){
-                if(results[i].error) return this.props._handleEditorOpen(row);     
+                if(results[i].error) return this.props._handleEditorOpen(results[i].debug, results[i].error, results[i].rowIndex);     
             }else if(this.props.zoomToLocation){
                 if(results[i].error) return this.props.zoomToLocation();
                 

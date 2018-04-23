@@ -14,13 +14,13 @@ const options = {
             },
             {
                 name: 'Borough',
-                required : false,
+                required : true,
                 comments: "Borough name, number, letter(s) [Required if ZipCode not given]"
             },
             {
                 name: 'ZipCode',
                 required : false,
-                comments: 'Standard USPS 5-digit zip code or zip+4. Must be a valid zip code for an area within New York City limits. (	Required if Borough not given)'
+                comments: 'Standard USPS 5-digit zip code or zip+4. (Required if Borough not given)'
             },
         ],
         description: 'Given a valid address, provides Street Name information and block-face level information.'
@@ -30,17 +30,17 @@ const options = {
         fields: [
             {
                 name: 'CrossStreetOne',
-                required : false,
+                required : true,
                 comments: 'First Cross Street (Required if NodeId not given)'
             },
             {
                 name: 'CrossStreetTwo',
-                required : false,
+                required : true,
                 comments: 'Second Cross Street (Required if NodeId not given)'
             },
             {
                 name: 'Borough',
-                required : false,
+                required : true,
                 comments: "Borough name, number, letter(s) of the first cross street or of all cross streets [Required if NodeId not given]"
             },
             {

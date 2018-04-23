@@ -18,7 +18,7 @@ class About extends Component {
                     <p>A web interface for the Location Service Rest API, that allows for easy uploading, viewing and downloading of location data</p>
                     <p>This project was bootstrapped with <a href="https://github.com/facebookincubator/create-react-app">Create React App</a></p>
                     
-                    <h2>Requirements</h2>
+                    <h2>Features</h2>
 
                     <ol>
                         <li>Upload a spreadsheet (csv, excel)<Icon color='green' name='checkmark'/></li>
@@ -29,9 +29,15 @@ class About extends Component {
                         <li>Download data in excel, geojson or shapefile<Icon color='green' name='checkmark'/></li>
                     </ol>
 
-                    <Message positive>
+                    <Message info>
                     Contact zhe@dot.nyc.gov , if there are any issues, questions or suggestions. 
                     </Message>
+
+                    <h3>test files (ignore)</h3>
+
+                    <ul>
+                        {['geocode_test.csv','geocode_test2.csv','LPI.xlsx'].map((file,i) => <li key={`filelink-${i}`}><a target='_blank' href={`${window.location.pathname}${file}`}>{file}</a></li>)}
+                    </ul>
 
                 </div>
 

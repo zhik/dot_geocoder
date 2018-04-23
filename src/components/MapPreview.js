@@ -51,6 +51,9 @@ class MapPreview extends Component {
     }
 
     zoomToLocation = (location) => {
+        //close popup
+        const popup = document.querySelector(".leaflet-popup-close-button");
+        if(popup) popup.click();
 
         if(!location){ 
             this.setState({viewport: DEFAULT_VIEWPORT});

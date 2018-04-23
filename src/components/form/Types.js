@@ -1,8 +1,8 @@
 import React from 'react';
 import options from './options';
-import { Message, Select } from 'semantic-ui-react'
+import { Message, Select, Button } from 'semantic-ui-react'
 
-const Types = ({selectedType, _changeType}) => {
+const Types = ({selectedType, _changeType, _changeStep}) => {
     const typesOptions = Object.keys(options).map(type => (
         {
             key: type, 
@@ -18,6 +18,9 @@ const Types = ({selectedType, _changeType}) => {
                     {options[selectedType].description}
                 </Message> 
             : null}
+            {selectedType ?
+                <Button disabled={!selectedType} onClick={() => selectedType ? _changeStep('fields'): null}>Next</Button>
+                :null}
         </React.Fragment>
     )
 }

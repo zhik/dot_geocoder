@@ -1,7 +1,6 @@
 import XLSX from 'xlsx';
 
-const exportExcel = (data) => {
-    var filename = "write.xlsx";
+const exportExcel = (fileName, data) => {
     
     var wb = XLSX.utils.book_new(), ws = XLSX.utils.aoa_to_sheet(data);
     
@@ -9,7 +8,7 @@ const exportExcel = (data) => {
     XLSX.utils.book_append_sheet(wb, ws);
 
     /* write workbook */
-    XLSX.writeFile(wb, filename);
+    XLSX.writeFile(wb, `${fileName}-gcd.xlsx`);
 }
 
 export default exportExcel;

@@ -9,9 +9,9 @@ const Navbar = ({location}) => {
         <Header as='h4' attached='top'>
             <img className='logo' src={logo} alt='dot-logo'/> 
             web batch geocoder 
-            <Label color='yellow'>
-            alpha v0.2
-            <Label.Detail>somewhat stable</Label.Detail>
+            <Label color='olive'>
+            alpha v0.3
+            <Label.Detail>working editor!</Label.Detail>
             </Label>
             <div className='nav-links'>
                 <Menu pointing size='mini' color='teal'>

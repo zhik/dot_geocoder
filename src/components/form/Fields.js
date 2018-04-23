@@ -1,10 +1,11 @@
 import React from 'react';
 import options from './options';
-import { Form, Select, Popup } from 'semantic-ui-react'
+import { Form, Select, Popup, Button } from 'semantic-ui-react'
+import '../../css/Fields.css';
 
-const Fields = ({ header,selectedType, fields, _changeField }) => {
+const Fields = ({ header,selectedType, fields, _changeField, _changeStep }) => {
     const optionsfields = options[selectedType].fields;
-
+    
     return(
         <div>
             <Form>
@@ -34,6 +35,9 @@ const Fields = ({ header,selectedType, fields, _changeField }) => {
                     required
                 /> */}
             </Form>
+
+            {Object.values(fields).some(field => field !== null) ? <div className='marginButton'><Button onClick={() => _changeStep('confirm')}>Next</Button></div>
+            : null}
         </div>
     )
 }

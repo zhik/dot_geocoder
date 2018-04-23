@@ -1,6 +1,6 @@
 import { download } from 'shp-write'; 
 
-const exportShapefile = (header, body, epsg) => {
+const exportShapefile = (fileName, header, body, epsg) => {
     //if( !((header.indexOf("Longitude") > -1 && header.indexOf("Latitude") > -1 ))) return null
 
     let x, y;
@@ -18,16 +18,19 @@ const exportShapefile = (header, body, epsg) => {
             y = "Latitude";
     }
 
+    //fix headers https://support.esri.com/en/technical-article/000005588
+    const newHeader = header.map(cell => cell.replace(/[^a-z0-9_]+|^_+/gi,''));
+
     //create geojson
-    const fc = {
+    const geojson = {
         type: 'FeatureCollection',
         features: []
     }
 
-    fc.features = body.map(row => {
+    geojson.features = body.map(row => {
         //bind header and body into object
         const properties = row.reduce( (properties, cell, index) => {
-            properties[header[index]] = cell;
+            properties[newHeader[index]] = cell;
             return properties;
         },{})
 
@@ -45,17 +48,16 @@ const exportShapefile = (header, body, epsg) => {
 
 
     //write to shp.zip
-    console.log(fc)
 
     const shp_options = {
-        folder: 'output',
+        folder: fileName,
             types: {
-            point: 'points'
-        },
+                point: fileName
+            },
         epsg: epsg
     }
 
-    download(fc , shp_options);
+    download(geojson , shp_options);
 }
 
 export default exportShapefile;

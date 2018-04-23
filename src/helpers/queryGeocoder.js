@@ -3,7 +3,7 @@ const generateURL = (type, params) => {
         return requestParams += `${param}=${params[param]}&`
     },'')
 
-    return `http://dotvlvweb/LocationServiceAPI/api/${type}?${requestParams}`
+    return `http://dotvlvweb/LocationServiceAPI/api/${type}?${requestParams}`;
 }
 
 
@@ -19,7 +19,7 @@ const queryGeocoder = (type, params) => {
                     
                     resolve(data)
                 })
-                .catch(err => reject(err))
+                .catch(err => reject(err));
     });
 }
 

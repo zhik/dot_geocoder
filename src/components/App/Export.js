@@ -8,7 +8,7 @@ const Export = ({ exportColumns, _downloadExcel, _downloadShape, children }) => 
     const shapefile2263Button = (
         <Button
             color='green'
-            content='Download as Shapefile (2263)'
+            content='Shapefile NAD83(2263)'
             icon='world'
             onClick={() => _downloadShape(2263)}
             disabled={!(exportColumnsTrue.indexOf("XCoordinate") > -1 && exportColumnsTrue.indexOf("YCoordinate") > -1)}
@@ -18,7 +18,7 @@ const Export = ({ exportColumns, _downloadExcel, _downloadShape, children }) => 
     const shapefile4326Button = (
         <Button
             color='blue'
-            content='Download as Shapefile (4326)'
+            content='Shapefile WGS84(4326)'
             icon='world'
             onClick={() => _downloadShape(4326)}
             disabled={!(exportColumnsTrue.indexOf("Longitude") > -1 && exportColumnsTrue.indexOf("Latitude") > -1)}
@@ -27,15 +27,17 @@ const Export = ({ exportColumns, _downloadExcel, _downloadShape, children }) => 
 
     return (
         <div className="export">
+        <h3>Download</h3>
+            <p>NAD83(2263) is used by the DOT,  WGS84(4326) is used by Web Maps(Google, Bing, etc)</p>
         <Button
             color='grey'
-            content='Download as Excel'
+            content='Excel'
             icon='download'
             onClick={_downloadExcel}
         />
         <Popup trigger={shapefile2263Button}>
             <Popup.Content>
-                Exports to NAD83 / New York Long Island (ftUS) - Used by the NYCDOT
+                Exports to NAD83 / New York Long Island (ftUS) - Used by NYCDOT
             </Popup.Content>    
         </Popup>
         <Popup trigger={shapefile4326Button}>

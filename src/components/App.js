@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import '../css/App.css';
 import 'semantic-ui-css/semantic.min.css';
-import { Popup, Icon } from 'semantic-ui-react'
 
 import readFile from '../helpers/readFile';
 import queryGeocoder from '../helpers/queryGeocoder';
@@ -14,6 +13,7 @@ import FileUpload from './App/FileUpload';
 import TablePreview from './App/TablePreview';
 import TableResult from './App/TableResult';
 import ColumnsPicker from './App/ColumnsPicker';
+import AppInfo from './App/AppInfo';
 
 import Editor from './editor/Editor';
 
@@ -29,25 +29,27 @@ class App extends Component {
           errorsCount: 0,
           finshed: false,
         },
+        fileName : '',
         fileError: false,
         exportColumns: {},
         isEditorOpen: false,
-        editRow: []
+        currentEdit: {}
     }
 
     componentWillMount(){
       //load up backup data
       const res = loadFromLocalStorage('res');
       if(res){
-        const {header, body, results, exportColumns} = res;
+        const {header, body, results, exportColumns, fileName} = res;
         this.setState({
-          header, body, results, exportColumns
+          header, body, results, exportColumns, fileName
         });
       }
     }
 
     _onFileChange = e => {
         const file = e.target.files[0];
+        const fileName = file.name.split('.')[0];
         readFile(file)
         .then(sheet => {
           const header = sheet[0];
@@ -55,8 +57,10 @@ class App extends Component {
           const status = this.state.status;
           status.count = body.length;
 
+          //reset
           this.setState({ 
             fileError: false,
+            fileName,
             body,
             header,
             results: [],
@@ -111,7 +115,7 @@ class App extends Component {
             status.resultsCount++
             this.setState({ status })
 
-            return {...data, error: false, rowIndex: i}
+            return {...data, error: false, rowIndex: i, debug: {query, type}}
           })
           .catch(error => {
             const status = this.state.status;
@@ -119,7 +123,7 @@ class App extends Component {
             status.errorsCount++
             this.setState({ status })
 
-            return {error , rowIndex: i}
+            return {error , rowIndex: i,  debug: {query, type}}
           })
       }))
         .then(results => {
@@ -133,8 +137,8 @@ class App extends Component {
         exportColumns.error = true;
         exportColumns.XCoordinate = true;
         exportColumns.YCoordinate = true;
-        exportColumns.Longitude = true;
-        exportColumns.Latitude = true;
+        // exportColumns.Longitude = true;
+        // exportColumns.Latitude = true;
         
         this.setState({
           status,
@@ -143,9 +147,9 @@ class App extends Component {
         });
 
         //backup results
-        const {header, body} = this.state;
+        const {header, body, fileName} = this.state;
         saveToLocalStorage('res', {
-          header, body, results, exportColumns
+          header, body, results, exportColumns, fileName
         });
 
         })
@@ -162,11 +166,27 @@ class App extends Component {
       this.setState({isEditorOpen: false});
     }
 
-    _handleEditorOpen = row => {
+    _handleEditorOpen = (debug, error, rowIndex) => {
       this.setState({
         isEditorOpen: true,
-        editRow: row
+        currentEdit: {...debug, error, rowIndex}
       })
+    }
+
+    _editRow = (rowIndex, data) => {
+      const results = this.state.results;
+
+      results[rowIndex] = data;
+      this.setState({
+        results,
+        isEditorOpen: false
+      }, ()=> {
+        //backup results
+        const {header, body, fileName, exportColumns} = this.state;
+        saveToLocalStorage('res', {
+          header, body, results, exportColumns, fileName
+        });
+      });
     }
 
   render() {
@@ -176,14 +196,12 @@ class App extends Component {
           location={this.props.location.pathname}
         />
 
+        <AppInfo />
+
         <div className="help">
           <FileUpload 
             _onFileChange={this._onFileChange} 
             fileError={this.state.fileError}
-          />
-          <Popup 
-            trigger={<Icon name='question circle outline' />}
-            content='choose a file, then select a function'
           />
         </div>
         <Form 
@@ -211,13 +229,15 @@ class App extends Component {
           results={this.state.results}
           exportColumns={this.state.exportColumns}
           _handleEditorOpen={this._handleEditorOpen}
+          fileName={this.state.fileName}
         />
 
         <Editor 
           open={this.state.isEditorOpen} 
           _handleEditorClose={this._handleEditorClose} 
-          row={this.state.editRow} 
+          currentEdit={this.state.currentEdit} 
           header={this.state.header}
+          _editRow={this._editRow}
         />
         
       </div>

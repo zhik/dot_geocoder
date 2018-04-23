@@ -21,13 +21,12 @@ class Form extends Component {
   }
 
   stepView = () => {
-    if(this.props.fileError){
-      return null
-    }
+    if(this.props.fileError) return null;
+    
     switch(this.state.currentStep){
-      case 'types': return <Types selectedType={this.state.selectedType} _changeType={this._changeType}/>;
-      case 'fields': return <Fields header={this.props.header} selectedType={this.state.selectedType} fields={this.state.fields} _changeField={this._changeField}/>;
-      case 'confirm': return <Confirm _submitForm={this._submitForm} status={this.props.status}/>;
+      case 'types': return <Types selectedType={this.state.selectedType} _changeType={this._changeType} _changeStep={this._changeStep} />;
+      case 'fields': return <Fields header={this.props.header} selectedType={this.state.selectedType} fields={this.state.fields} _changeField={this._changeField} _changeStep={this._changeStep} />;
+      case 'confirm': return <Confirm _submitForm={this._submitForm} status={this.props.status} _changeStep={this._changeStep} />;
       default: return null;
     }
   }
@@ -59,7 +58,7 @@ class Form extends Component {
 
   //form vaildation 
   checkForm(){
-    return true
+    return true;
   }
 
   _submitForm= () => {
