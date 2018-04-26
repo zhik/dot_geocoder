@@ -34,7 +34,7 @@ const Steps = ({currentStep, _changeStep, header, selectedType, confirm}) => {
     ]
 
     return(
-        <Step.Group vertical items={steps} />
+        <Step.Group items={steps} />
     )
 }
 

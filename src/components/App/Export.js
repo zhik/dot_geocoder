@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, Popup } from 'semantic-ui-react'
+import { Button, Popup,Label } from 'semantic-ui-react'
+import { NavLink } from 'react-router-dom'
 
 const Export = ({ exportColumns, _downloadExcel, _downloadShape, children }) => {
     //filter for only true exportColumns
@@ -7,7 +8,7 @@ const Export = ({ exportColumns, _downloadExcel, _downloadShape, children }) => 
 
     const shapefile2263Button = (
         <Button
-            color='green'
+            color='facebook'
             content='Shapefile NAD83(2263)'
             icon='world'
             onClick={() => _downloadShape(2263)}
@@ -26,26 +27,28 @@ const Export = ({ exportColumns, _downloadExcel, _downloadShape, children }) => 
     )
 
     return (
-        <div className="export">
-        <h3>Download</h3>
+        <div className="section">
+            <Label as='a' color='olive' ribbon='left'>4</Label>
+            <h3>Download</h3>
             <p>NAD83(2263) is used by the DOT,  WGS84(4326) is used by Web Maps(Google, Bing, etc)</p>
-        <Button
-            color='grey'
-            content='Excel'
-            icon='download'
-            onClick={_downloadExcel}
-        />
-        <Popup trigger={shapefile2263Button}>
-            <Popup.Content>
-                Exports to NAD83 / New York Long Island (ftUS) - Used by NYCDOT
-            </Popup.Content>    
-        </Popup>
-        <Popup trigger={shapefile4326Button}>
-            <Popup.Content>
-                Exports to WGS 84 - Used by most web maps
-            </Popup.Content>    
-        </Popup>
-        {children}
+            <Button
+                color='grey'
+                content='Excel'
+                icon='download'
+                onClick={_downloadExcel}
+            />
+            <Popup trigger={shapefile2263Button}>
+                <Popup.Content>
+                    Exports to NAD83 / New York Long Island (ftUS) - Used by NYCDOT
+                </Popup.Content>    
+            </Popup>
+            <Popup trigger={shapefile4326Button}>
+                <Popup.Content>
+                    Exports to WGS 84 - Used by most web maps
+                </Popup.Content>    
+            </Popup>
+            <Button icon="map" size='tiny' content={<NavLink to="/map">View on Map</NavLink>}/>
+            {children}
         </div>
     )
 }

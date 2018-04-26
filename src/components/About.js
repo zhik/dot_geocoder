@@ -3,8 +3,6 @@ import Navbar from './Navbar';
 import ChangeLog from './About/ChangeLog';
 import { Icon, Message } from 'semantic-ui-react';
 
-import '../css/About.css';
-
 class About extends Component {
     render(){
         return(
@@ -13,7 +11,7 @@ class About extends Component {
                     location={this.props.location.pathname}
                 />
 
-                <div className="about"> 
+                <div className="section"> 
                     <h1>Web Batch Geocoder using Location Service Rest API</h1>
                     <p>A web interface for the Location Service Rest API, that allows for easy uploading, viewing and downloading of location data</p>
                     <p>This project was bootstrapped with <a href="https://github.com/facebookincubator/create-react-app">Create React App</a></p>
@@ -42,6 +40,11 @@ class About extends Component {
                 </div>
 
                 <ChangeLog />
+
+                <div className="section">
+                    <p>made for interns ❤</p>
+                    <p>special thanks to Ahmad for criticizing my colors choices</p>
+                </div>
 
             </div>
         )

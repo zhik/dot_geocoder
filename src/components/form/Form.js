@@ -7,6 +7,8 @@ import Fields from './Fields';
 import Steps from './Steps';
 import Confirm from './Confirm';
 
+import { Label } from 'semantic-ui-react'
+
 class Form extends Component {
   state = {
     selectedType: null,
@@ -67,8 +69,9 @@ class Form extends Component {
 
   render() {
     return ( 
-    <div className='panel'>
-      <div className='left-panel'>
+    <div className='section'>
+    <Label as='a' color='olive' ribbon='left'>2</Label>
+      <div className='top-panel'>
         <Steps 
           currentStep={this.state.currentStep} 
           _changeStep={this._changeStep} 
@@ -78,7 +81,7 @@ class Form extends Component {
           fileError={this.props.fileError}
           />
       </div> 
-      <div className='right-panel'>
+      <div className='bottom-panel'>
         {this.stepView()}
       </div>
     </div>

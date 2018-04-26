@@ -5,3 +5,13 @@
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+.direction-buttons{
+    display: flex !important;
+    align-items: center;
+    margin: 5px !important;
+}
+
+.direction-buttons button{
+    margin: 1em !important;
+}

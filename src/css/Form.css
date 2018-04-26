@@ -1,13 +1,15 @@
-.panel{
-    display: flex;
-    margin: 2em;
+.top-panel{
+    /* flex-grow: 0;
+    flex-shrink: 0;  */
 }
 
-.left-panel{
-    flex-grow: 0;
-    flex-shrink: 0; 
+.bottom-panel{
+    /* margin-left: 2em; */
+    margin-top: 2em;
+    width: 50%;
+
 }
 
-.right-panel{
-    margin-left: 2em;
+.marginButton{
+    margin-top: 14px;
 }

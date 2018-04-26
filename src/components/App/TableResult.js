@@ -101,7 +101,6 @@ class TableResult extends Component {
                     return(
                         <Table.Row 
                             key={`pbody-${i}`} 
-                            positive={!results[i].error}
                             negative={Boolean(results[i].error)}
                             onClick={() => onRowClick(row, i)}
                         >
@@ -116,7 +115,6 @@ class TableResult extends Component {
                 return(
                     <Table.Row 
                         key={`pbody-${i}`} 
-                        positive={!results[i].error}
                         negative={Boolean(results[i].error)}
                         onClick={() => onRowClick(row, i)}
                     >
@@ -135,7 +133,7 @@ class TableResult extends Component {
                 </Export>
                 <div className='table-preview'>
                     <h3>Results</h3>
-                    <Table celled striped compact>
+                    <Table celled striped compact selectable>
                         <Table.Header>
                             <Table.Row key={`rheader`}>
                                 <Table.HeaderCell  key={`rheader-index`}>#</Table.HeaderCell >

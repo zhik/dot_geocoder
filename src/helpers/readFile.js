@@ -18,8 +18,10 @@ const readFile = file => {
             const ws = wb.Sheets[wsname];
             /* Convert array of arrays */
             const data = XLSX.utils.sheet_to_json(ws, {header:1});
+            /* Remove empty object arrays */
+            const cleanData = data.filter(array => array.length > 0);
             /* Update state */
-            resolve(data);
+            resolve(cleanData);
         };
         if(rABS) reader.readAsBinaryString(file); else reader.readAsArrayBuffer(file);
         

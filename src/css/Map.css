@@ -1,9 +1,30 @@
-.leaflet-container {
+.leaflet-small-container {
     height: 300px;
-    width: 95%;
+    width: 100%;
+    margin: 0 auto;
+}
+
+
+.leaflet-full-container {
+    height: 100%;
     margin: 0 auto;
 }
 
 .message{
     margin: 2em;
+}
+
+.panel{
+    display: flex;
+    justify-content: space-between;
+}
+
+.left-panel{
+    width: 35%;
+}
+
+.right-panel{
+    width: 65%;
+    height: calc(100vh - 100px);
+    overflow-y: auto;
 }

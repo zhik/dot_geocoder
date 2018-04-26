@@ -34,14 +34,18 @@ class MapPreview extends Component {
     }
 
     componentWillMount(){
-        //load up backup data
+      //load up backup data, only if it is the same version
+      if(localStorage.getItem("version") === 'alpha v0.3 working editor!'){
         const res = loadFromLocalStorage('res');
         if(res){
-            const {header, body, results, exportColumns} = res;
-            this.setState({
-              header, body, results, exportColumns
-            });
+          const {header, body, results, exportColumns, fileName} = res;
+          this.setState({
+            header, body, results, exportColumns, fileName
+          });
         }
+      }else{
+        localStorage.setItem('version','alpha v0.3 working editor!');
+      }
     }
 
     _updateExportColumn = (column) => {
@@ -77,51 +81,59 @@ class MapPreview extends Component {
             return points;
         },[])
         return(
-            <div>
+            <React.Fragment>
                 <Navbar 
                     location={this.props.location.pathname}
                 />
+            
+                <div className="panel">
+                    <div className="left-panel">
+                    <Map 
+                        zoom={this.state.zoom} 
+                        className="map leaflet-full-container"
+                        viewport={this.state.viewport}>
+                    >
+                        <TileLayer
+                        attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        />
+                        {points.map((point,i) => 
+                            <Marker key={`marker-${i}`} position={point.position}>
+                            <Popup>
+                                <span>
+                                {point.rowIndex + 1}
+                                </span>
+                            </Popup>
+                            </Marker>
+                        )}
+                    </Map>
+                
+                </div>
 
-                <Map 
-                    zoom={this.state.zoom} 
-                    className="map"
-                    viewport={this.state.viewport}>
-                >
-                    <TileLayer
-                    attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                <div className="right-panel">
+                    <div className='message'>
+                        {points.length ? null : <Message negative><Message.Header>No points</Message.Header><p>Please go back to home and geocode something</p></Message>}
+                    </div>
+
+                            
+                    <ColumnsPicker 
+                        header={this.state.header}
+                        results={this.state.results}
+                        exportColumns={this.state.exportColumns}
+                        _updateExportColumn={this._updateExportColumn}
                     />
-                    {points.map((point,i) => 
-                        <Marker key={`marker-${i}`} position={point.position}>
-                        <Popup>
-                            <span>
-                            {point.rowIndex + 1}
-                            </span>
-                        </Popup>
-                        </Marker>
-                    )}
-                </Map>
 
-            <div className='message'>
-                {points.length ? null : <Message negative><Message.Header>No points</Message.Header><p>Please go back to home and geocode something</p></Message>}
-            </div>
-
-            <ColumnsPicker 
-                header={this.state.header}
-                results={this.state.results}
-                exportColumns={this.state.exportColumns}
-                _updateExportColumn={this._updateExportColumn}
-            />
-
-            <TableResult 
-                header={this.state.header} 
-                body={this.state.body}
-                results={this.state.results}
-                exportColumns={this.state.exportColumns}
-                zoomToLocation={this.zoomToLocation}
-            />
+                    <TableResult 
+                        header={this.state.header} 
+                        body={this.state.body}
+                        results={this.state.results}
+                        exportColumns={this.state.exportColumns}
+                        zoomToLocation={this.zoomToLocation}
+                    />
+                </div>
 
             </div>
+        </React.Fragment>
         )
     }
 }

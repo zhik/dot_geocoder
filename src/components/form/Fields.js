@@ -1,13 +1,15 @@
 import React from 'react';
 import options from './options';
-import { Form, Select, Popup, Button } from 'semantic-ui-react'
-import '../../css/Fields.css';
+import { Form, Select, Popup, Button, Message } from 'semantic-ui-react'
 
 const Fields = ({ header,selectedType, fields, _changeField, _changeStep }) => {
     const optionsfields = options[selectedType].fields;
     
     return(
         <div>
+            <Message color="red">
+                Select corresponding fields. <u>Not all fields have to be filled out</u>, check info icon for help
+            </Message> 
             <Form>
                 {optionsfields.map((field,i) => {
                     const headerOptions = ['empty', ...header].map((column,i)=> (

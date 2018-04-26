@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Checkbox } from 'semantic-ui-react';
+import { Checkbox, Label ,Popup, Icon } from 'semantic-ui-react';
 import { flatten } from 'flat';
 
 class ColumnsPicker extends Component {
@@ -22,9 +22,18 @@ class ColumnsPicker extends Component {
         ));
 
         return (
-            <div className="picker">
-                <h3>Export Columns</h3>
-                {columns}
+            <div className="section">
+                <Label as='a' color='olive' ribbon='left'>3</Label>
+                <div className="picker">
+                    <h3>Export Columns
+                        <Popup 
+                            position='bottom center' 
+                            trigger={<Icon name='question circle outline' />}
+                            content={<p>Select the columns you want to view and export to excel or shapefile</p>}
+                        />
+                    </h3>
+                    {columns}
+                </div>
             </div>
         )
     }

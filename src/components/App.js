@@ -37,13 +37,17 @@ class App extends Component {
     }
 
     componentWillMount(){
-      //load up backup data
-      const res = loadFromLocalStorage('res');
-      if(res){
-        const {header, body, results, exportColumns, fileName} = res;
-        this.setState({
-          header, body, results, exportColumns, fileName
-        });
+      //load up backup data, only if it is the same version
+      if(localStorage.getItem("version") === 'alpha v0.3 working editor!'){
+        const res = loadFromLocalStorage('res');
+        if(res){
+          const {header, body, results, exportColumns, fileName} = res;
+          this.setState({
+            header, body, results, exportColumns, fileName
+          });
+        }
+      }else{
+        localStorage.setItem('version','alpha v0.3 working editor!');
       }
     }
 
@@ -198,22 +202,22 @@ class App extends Component {
 
         <AppInfo />
 
-        <div className="help">
           <FileUpload 
             _onFileChange={this._onFileChange} 
             fileError={this.state.fileError}
           />
-        </div>
+
+        <TablePreview 
+          header={this.state.header} 
+          body={this.state.body}
+        />
+
         <Form 
           header={this.state.header} 
           fields={this.state.fields}
           status={this.state.status}
           queryApi={this.queryApi}
           fileError={this.fileError}
-        />
-        <TablePreview 
-          header={this.state.header} 
-          body={this.state.body}
         />
 
         <ColumnsPicker 
