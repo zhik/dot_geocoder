@@ -28,7 +28,7 @@ class About extends Component {
                     </ol>
 
                     <Message info>
-                    Contact zhe@dot.nyc.gov , if there are any issues, questions or suggestions. 
+                    Contact <a href="mailto:zhe@dot.nyc.gov?subject=Web Batch Geocoder">zhe@dot.nyc.gov</a> , if there are any issues, questions or suggestions. 
                     </Message>
 
                     <h3>test files (ignore)</h3>

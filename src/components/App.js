@@ -241,6 +241,7 @@ class App extends Component {
           _handleEditorClose={this._handleEditorClose} 
           currentEdit={this.state.currentEdit} 
           header={this.state.header}
+          body={this.state.body}
           _editRow={this._editRow}
         />
         

@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import { Form, Divider, Button, Message } from 'semantic-ui-react'
+import { Form, Divider, Button, Message, Table, Header } from 'semantic-ui-react'
 
 import queryGeocoder from '../../helpers/queryGeocoder';
 import { Map, TileLayer, Marker } from 'react-leaflet';
+import fieldHelper from '../../helpers/fieldHelper';
 
 class DefaultFix extends Component {
     
@@ -27,8 +28,14 @@ class DefaultFix extends Component {
 
     _geocode = () => {
         const query = this.state.query;
+        //run fieldHelper on query
+        const modQuery = Object.keys(query).reduce((modQuery,field)=> {
+            const value = query[field];
+            modQuery[field] = fieldHelper(value,field);
+            return modQuery;
+        }, {})
         const { type, rowIndex } = this.props;
-        return queryGeocoder(this.props.type, query)
+        return queryGeocoder(this.props.type, modQuery)
             .then(data=> {
                 const tempEdit = {...data, error: false, rowIndex, debug: {query: query, type}};
                 this.setState({tempEdit});
@@ -56,7 +63,9 @@ class DefaultFix extends Component {
                                     />
                                     <Marker position={position}></Marker>
                             </Map>
-                            <Button positive onClick={() => this.props._editRow(this.props.rowIndex, this.state.tempEdit)}>Confirm</Button>
+                            <Button.Group className="direction-buttons">
+                                <Button positive onClick={() => this.props._editRow(this.props.rowIndex, this.state.tempEdit)}>Confirm</Button>
+                            </Button.Group>
                         </React.Fragment>
                     )
                 }else{
@@ -79,6 +88,25 @@ class DefaultFix extends Component {
                             (esc to exit)
                         </ol>
                 </Message>
+                <Header as='h4'>Preview Table</Header>
+                <Table compact celled>
+                    <Table.Header>
+                        <Table.Row>
+                            {this.props.header.map(head => (
+                                <Table.HeaderCell key={`editor-table-head-${head}`}>{head}</Table.HeaderCell>
+                            ))}
+                        </Table.Row>
+                    </Table.Header>
+                    <Table.Body>
+                        <Table.Row>
+                            {this.props.body[this.props.rowIndex].map(body=> (
+                                <Table.Cell key={`editor-table-body-${body}`}>{body}</Table.Cell>
+                            ))}
+                        </Table.Row>
+                    </Table.Body>
+                </Table>
+                <Divider />
+                <Header as='h4'>Editor</Header>
                 <Form>
                     {Object.keys(this.props.query).map((field,i) => (
                         <Form.Input 
@@ -88,7 +116,9 @@ class DefaultFix extends Component {
                             onChange={(e)=> this._updateField(e,field)}
                             />
                     ))}     
-                    <Button onClick={this._geocode}>Geocode</Button>
+                    <Button.Group className="direction-buttons">
+                        <Button onClick={this._geocode}>Geocode</Button>
+                    </Button.Group>
                     <Divider section />
 
                     {results()}

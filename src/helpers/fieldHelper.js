@@ -36,7 +36,7 @@ const fieldHelper = (cell, field) => {
             const cCell = String(cell.toLowerCase().trim());
             return cCell in BOROUGH_DICT ? BOROUGH_DICT[cCell] : cell;
         default:
-            return cell
+            return String(cell).trim();
     }  
 }
 

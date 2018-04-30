@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Async from 'react-promise'
 import DefaultFix from './DefaultFix.js';
-import { Modal, Button, Message } from 'semantic-ui-react';
+import { Modal, Button, Message, Icon } from 'semantic-ui-react';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 
@@ -59,7 +59,7 @@ const fixes = {
                                     <Button key={`editor-button-${i}`} onClick={()=> _editRow(rowIndex,point.data)} >{point.direction}</Button>       
                                 ))}
                             </Button.Group>
-                            <Map center={points[0].position} zoom={18} className="map leaflet-small-container">
+                            <Map center={points[0].position} zoom={16} className="map leaflet-small-container">
                                 <TileLayer 
                                     attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors" 
                                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -98,10 +98,14 @@ class Editor extends Component {
                 onClose={this.props._handleEditorClose}
                 closeOnDocumentClick={false}
             >
+                <Icon onClick={this.props._handleEditorClose} name="window close" size="massive" color="red"/>
                 <Modal.Header>{error}</Modal.Header>
                 <Modal.Content>
                     {fix ? fixes[fix](query,type,rowIndex,this.props._editRow) 
                     : <DefaultFix 
+                        currentEdit={this.props.currentEdit}
+                        header={this.props.header}
+                        body={this.props.body}
                         query={query}
                         type={type}
                         rowIndex={rowIndex}
