@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
 import { Form, Divider, Button, Message, Table, Header } from 'semantic-ui-react'
+import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
+import GoogleMapsLink from './GoogleMapsLink';
 
 import queryGeocoder from '../../helpers/queryGeocoder';
-import { Map, TileLayer, Marker } from 'react-leaflet';
 import fieldHelper from '../../helpers/fieldHelper';
+
 
 class DefaultFix extends Component {
     
@@ -61,7 +63,13 @@ class DefaultFix extends Component {
                                         attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors" 
                                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                     />
-                                    <Marker position={position}></Marker>
+                                    <Marker position={position}>
+                                        <Popup>
+                                            <span>
+                                                <GoogleMapsLink position={position}/>
+                                            </span>
+                                        </Popup>
+                                    </Marker>
                             </Map>
                             <Button.Group className="direction-buttons">
                                 <Button positive onClick={() => this.props._editRow(this.props.rowIndex, this.state.tempEdit)}>Confirm</Button>

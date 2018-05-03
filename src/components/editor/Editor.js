@@ -4,6 +4,7 @@ import DefaultFix from './DefaultFix.js';
 import { Modal, Button, Message, Icon } from 'semantic-ui-react';
 import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
+import GoogleMapsLink from './GoogleMapsLink';
 
 import '../../css/Editor.css';
 
@@ -67,7 +68,10 @@ const fixes = {
                                 {points.map((point,i) => (
                                     <Marker key={`editor-marker-${i}`} position={point.position}>
                                         <Popup>
-                                            <span>{point.direction}</span>
+                                            <span>
+                                                <p>{point.direction}</p>
+                                                <GoogleMapsLink position={point.position}/>
+                                            </span>
                                         </Popup>
                                     </Marker>
                                 ))}

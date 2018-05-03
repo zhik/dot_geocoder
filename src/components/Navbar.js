@@ -19,7 +19,7 @@ const Navbar = ({location}) => {
                         <NavLink to="/">Home</NavLink>
                     </Menu.Item>
                     <Menu.Item active={location === '/map'}>
-                        <NavLink to="/map">Map</NavLink>
+                        <NavLink to="/block">Block</NavLink>
                     </Menu.Item>
                     <Menu.Item active={location === '/about'}>
                         <NavLink to="/about">About</NavLink>
