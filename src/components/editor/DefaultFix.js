@@ -18,6 +18,7 @@ class DefaultFix extends Component {
         const query = this.props.query;
         if(this.props.type === 'intersection'){
             query.CompassDirection = '';
+            query.NodeId = '';
         }
         this.setState({query: this.props.query});
     }
@@ -39,11 +40,11 @@ class DefaultFix extends Component {
         const { type, rowIndex } = this.props;
         return queryGeocoder(this.props.type, modQuery)
             .then(data=> {
-                const tempEdit = {...data, error: false, rowIndex, debug: {query: query, type}};
+                const tempEdit = {...data, error: false, rowIndex, debug: {query: modQuery, type, string: JSON.stringify(modQuery)}};
                 this.setState({tempEdit});
             })
             .catch(error => {
-                const tempEdit = {error , rowIndex, debug: {query: query, type}};
+                const tempEdit = {error , rowIndex, debug: {query: modQuery, type, string: JSON.stringify(modQuery)}};
                 this.setState({tempEdit});
             })
         }

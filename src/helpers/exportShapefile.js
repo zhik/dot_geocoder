@@ -21,7 +21,7 @@ const exportShapefile = (fileName, header, body, epsg) => {
     //fix headers https://support.esri.com/en/technical-article/000005588
     //first remove _ underscores in the beginning
     //next replace illegal characters with _ underscores 
-    const newHeader = header.map(cell => cell.replace(/[^a-zA-Z0-9_]+/gi,'_').replace(/^_+/gi,''));
+    const newHeader = header.map(cell => cell.replace(/[^a-z0-9_]+/gi,'_').replace(/^_+/gi,''));
 
     //create geojson
     const geojson = {

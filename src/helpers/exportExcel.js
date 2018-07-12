@@ -8,7 +8,8 @@ const exportExcel = (fileName, data) => {
     XLSX.utils.book_append_sheet(wb, ws);
 
     /* write workbook */
-    XLSX.writeFile(wb, `${fileName}-gcd.xlsx`);
+    XLSX.write(wb, {bookType:'csv', bookSST:true, type: 'base64'})
+    XLSX.writeFile(wb, `${fileName}-gcd.csv`);
 }
 
 export default exportExcel;

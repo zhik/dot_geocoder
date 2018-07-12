@@ -54,6 +54,7 @@ function write(rows, geometry_type, geometries, callback) {
         dbf: dbfBuf,
         prj: prj
     });
+
 }
 
 function writeHeader(view, TYPE) {

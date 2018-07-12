@@ -119,7 +119,7 @@ class App extends Component {
             status.resultsCount++
             this.setState({ status })
 
-            return {...data, error: false, rowIndex: i, debug: {query, type}}
+            return {...data, error: false, rowIndex: i, debug: {query, type, string: JSON.stringify(query)}}
           })
           .catch(error => {
             const status = this.state.status;
@@ -127,7 +127,7 @@ class App extends Component {
             status.errorsCount++
             this.setState({ status })
 
-            return {error , rowIndex: i,  debug: {query, type}}
+            return {error , rowIndex: i,  debug: {query, type, string: JSON.stringify(query)}}
           })
       }))
         .then(results => {

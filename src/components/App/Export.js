@@ -33,7 +33,7 @@ const Export = ({ exportColumns, _downloadExcel, _downloadShape, children }) => 
             <p>NAD83(2263) is used by the DOT,  WGS84(4326) is used by Web Maps(Google, Bing, etc) - to enable WSG84 include Latitude and Longitude in Export Columns</p>
             <Button
                 color='grey'
-                content='Excel'
+                content='CSV/Excel'
                 icon='download'
                 onClick={_downloadExcel}
             />

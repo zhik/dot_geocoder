@@ -26,10 +26,10 @@ const fixes = {
             const modQuery = {...query, 'CompassDirection': direction};
             return queryGeocoder(type, modQuery)
                 .then(data=> {
-                    return {...data, error: false, rowIndex, debug: {query: modQuery, type}};
+                    return {...data, error: false, rowIndex, debug: {query: modQuery, type, string: JSON.stringify(modQuery)}};
                 })
                 .catch(error => {
-                    return {error , rowIndex, debug: {query: modQuery, type}};
+                    return {error , rowIndex, debug: {query: modQuery, type, string: JSON.stringify(modQuery)}};
                 })
         }))
 

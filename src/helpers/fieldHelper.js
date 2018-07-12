@@ -33,10 +33,10 @@ const BOROUGH_DICT = {
 const fieldHelper = (cell, field) => {
     switch(field){
         case 'Borough':
-            const cCell = String(cell.toLowerCase().trim());
+            const cCell = String(cell).toLowerCase().trim();
             return cCell in BOROUGH_DICT ? BOROUGH_DICT[cCell] : cell;
         case 'CompassDirection':
-            return String(cell.toUpperCase().trim())
+            return String(cell).toUpperCase().trim();
         default:
             return String(cell).trim();
     }  
