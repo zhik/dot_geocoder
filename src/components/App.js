@@ -40,7 +40,7 @@ class App extends Component {
     componentWillMount(){
       //load up backup data, only if it is the same version
       if(localStorage.getItem("version") === 'alpha v0.3 working editor!'){
-        const res = loadFromLocalStorage('res');
+        const res = loadFromLocalStorage('app');
         if(res){
           const {header, body, results, exportColumns, fileName} = res;
           this.setState({
@@ -153,7 +153,7 @@ class App extends Component {
 
         //backup results
         const {header, body, fileName} = this.state;
-        saveToLocalStorage('res', {
+        saveToLocalStorage('app', {
           header, body, results, exportColumns, fileName
         });
 
