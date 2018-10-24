@@ -1,8 +1,7 @@
 import React from 'react';
-import options from './options';
 import { Message, Select, Button } from 'semantic-ui-react'
 
-const Types = ({selectedType, _changeType, _changeStep}) => {
+const Types = ({selectedType, _changeType, _changeStep, options}) => {
     const typesOptions = Object.keys(options).map(type => (
         {
             key: type, 

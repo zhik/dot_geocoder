@@ -41,10 +41,6 @@ class About extends Component {
 
                 <ChangeLog />
 
-                <div className="section">
-                    <p>made for interns ❤</p>
-                    <p>special thanks to Ahmad for criticizing my colors choices</p>
-                </div>
 
             </div>
         )

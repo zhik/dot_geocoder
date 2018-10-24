@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import '../../css/Form.css';
-import options from './options';
 
 import Types from './Types';
 import Fields from './Fields';
@@ -26,8 +25,8 @@ class Form extends Component {
     if(this.props.fileError) return null;
     
     switch(this.state.currentStep){
-      case 'types': return <Types selectedType={this.state.selectedType} _changeType={this._changeType} _changeStep={this._changeStep} />;
-      case 'fields': return <Fields header={this.props.header} selectedType={this.state.selectedType} fields={this.state.fields} _changeField={this._changeField} _changeStep={this._changeStep} />;
+      case 'types': return <Types options={this.props.options} selectedType={this.state.selectedType} _changeType={this._changeType} _changeStep={this._changeStep} />;
+      case 'fields': return <Fields options={this.props.options}  header={this.props.header} selectedType={this.state.selectedType} fields={this.state.fields} _changeField={this._changeField} _changeStep={this._changeStep} />;
       case 'confirm': return <Confirm _submitForm={this._submitForm} status={this.props.status} _changeStep={this._changeStep} />;
       default: return null;
     }
@@ -38,7 +37,7 @@ class Form extends Component {
     const selectedType = data.value;
     this.setState({ selectedType });
     //reset fields
-    const fields = options[selectedType].fields.reduce((fields, field) => {
+    const fields = this.props.options[selectedType].fields.reduce((fields, field) => {
       fields[field.name] = null;
       return fields;
     },{})
@@ -79,6 +78,7 @@ class Form extends Component {
           selectedType={this.state.selectedType}
           confirm={this.state.confirm}
           fileError={this.props.fileError}
+          options={this.props.options}
           />
       </div> 
       <div className='bottom-panel'>

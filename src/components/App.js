@@ -8,6 +8,7 @@ import {saveToLocalStorage, loadFromLocalStorage} from '../helpers/localStorage'
 import fieldHelper from '../helpers/fieldHelper';
 
 import Navbar from './Navbar';
+import FORMOPTIONS from './form/options';
 import Form from './form/Form';
 import FileUpload from './App/FileUpload';
 import TablePreview from './App/TablePreview';
@@ -217,7 +218,8 @@ class App extends Component {
           fields={this.state.fields}
           status={this.state.status}
           queryApi={this.queryApi}
-          fileError={this.fileError}
+          fileError={this.state.fileError}
+          options={FORMOPTIONS}
         />
 
         <ColumnsPicker 
