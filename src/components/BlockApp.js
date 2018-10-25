@@ -1,3 +1,4 @@
+//deals with (points - lines) array/list returns like block face and stretch
 import React, { Component } from 'react';
 import Navbar from './Navbar';
 import '../css/App.css';
@@ -7,12 +8,16 @@ import readFile from '../helpers/readFile';
 import queryGeocoder from '../helpers/queryGeocoder';
 import {saveToLocalStorage, loadFromLocalStorage} from '../helpers/localStorage';
 import fieldHelper from '../helpers/fieldHelper';
+import {blockReduce} from '../helpers/blockReduce';
 
 import FileUpload from './App/FileUpload';
 import TablePreview from './App/TablePreview';
 import FORMBLOCKOPTIONS from './form/blockOptions';
 import Form from './form/Form';
+import ColumnsPicker from './App/ColumnsPicker';
+import BlockTableResult from './App/BlockTableResult';
 
+import BlockEditor from './editor/BlockEditor';
 
 class BlockApp extends Component{
     state = {
@@ -81,45 +86,47 @@ class BlockApp extends Component{
         })
     }
 
-    queryApi = (fields,type) => {
+    queryApi = (fields, type) => {
         //reset status and start
         const status = this.state.status;
         status.start = true;
         status.finshed = false;
         status.resultsCount = 0;
         status.errorsCount = 0;
-        this.setState({ status });
+        this.setState({
+            status
+        });
 
 
         //get the index for each field, if it isn't null
         const fieldIndexes = Object.keys(fields).reduce((fieldIndexes, field) => {
-          if(fields[field]){
-            fieldIndexes[field] = this.state.header.indexOf(fields[field]);
-          }
-          return fieldIndexes;
-        },{})
-  
+            if (fields[field]) {
+                fieldIndexes[field] = this.state.header.indexOf(fields[field]);
+            }
+            return fieldIndexes;
+        }, {})
+
         //setup query all rows in body, using the index
         const queries = this.state.body.map(row => {
-            const queryObject= Object.keys(fieldIndexes).reduce((query, field) => {
+            const queryObject = Object.keys(fieldIndexes).reduce((query, field) => {
                 const index = fieldIndexes[field];
                 //helpers for certain fields like borough
                 query[field] = fieldHelper(row[index], field);
 
 
                 return query;
-            },{});
+            }, {});
 
             //add hidden field, for certain functions ExtendedStretchType
-            switch(type){
+            switch (type) {
                 case 'extendedStretch_blockface':
-                        queryObject['BlockType'] = 'ExtendedStretch';
-                        queryObject['ExtendedStretchType'] = 'Blockface';
-                        
+                    queryObject['BlockType'] = 'ExtendedStretch';
+                    queryObject['ExtendedStretchType'] = 'Blockface';
+
                     break;
                 case 'extendedStretch_intersection':
-                        queryObject['BlockType'] = 'ExtendedStretch';
-                        queryObject['ExtendedStretchType'] = 'Intersection';
+                    queryObject['BlockType'] = 'ExtendedStretch';
+                    queryObject['ExtendedStretchType'] = 'Intersection';
                     break;
                 default:
             }
@@ -128,62 +135,137 @@ class BlockApp extends Component{
 
         let mod_type = type;
         //fix the type so the url works for Block functions
-        switch(type){
-            case('extendedStretch_blockface'):
-            case('extendedStretch_intersection'):
+        switch (type) {
+            case ('extendedStretch_blockface'):
+            case ('extendedStretch_intersection'):
                 mod_type = 'Block';
                 break;
             default:
         }
-        
+
         //start query
-        Promise.all(queries.map( (query,i) => {
-            return queryGeocoder(mod_type, query)
-            .then(data=> {
-                const status = this.state.status;
-                status.resultsCount++
-                this.setState({ status })
+        Promise.all(queries.map((query, i) => {
+                return queryGeocoder(mod_type, query)
+                    .then(data => {
+                        const status = this.state.status;
+                        status.resultsCount++
+                            this.setState({
+                                status
+                            })
 
-                return {...data, error: false, rowIndex: i, debug: {query, type, string: JSON.stringify(query)}}
-            })
-            .catch(error => {
-                const status = this.state.status;
-                status.resultsCount++
-                status.errorsCount++
-                this.setState({ status })
+                        return { ...data,
+                            error: false,
+                            rowIndex: i,
+                            debug: {
+                                query,
+                                type,
+                                string: JSON.stringify(query)
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        const status = this.state.status;
+                        status.resultsCount++
+                            status.errorsCount++
+                            this.setState({
+                                status
+                            })
 
-                return {error , rowIndex: i,  debug: {query, type, string: JSON.stringify(query)}}
-            })
-        }))
-            .then(results => {
-            const status = this.state.status;
-            status.start = false;
-            status.finshed = true;
+                        return {
+                            error,
+                            rowIndex: i,
+                            debug: {
+                                query,
+                                type,
+                                string: JSON.stringify(query)
+                            }
+                        }
+                    })
+            }))
+            .then((results) => {
+                //To-do add await instead of chaining promises
 
-            //default enable header columns and error
-            const exportColumns = {};
-            this.state.header.map(i => exportColumns[i] = true);
-            exportColumns.error = true;
-            exportColumns.XCoordinate = true;
-            exportColumns.YCoordinate = true;
-            // exportColumns.Longitude = true;
-            // exportColumns.Latitude = true;
+                //get block results and sort by rowIndex and listIndex 
+                blockReduce(results).then(res => {
+                    const mod_results = res.sort((a, b) => {
+                        if (a.rowIndex > b.rowIndex) {
+                            return 1;
+                        } else if (a.rowIndex < b.rowIndex) {
+                            return -1;
+                        } else {
+                            if (a.hasOwnProperty('listIndex') && b.hasOwnProperty('listIndex')) {
+                                return a.listIndex - b.listIndex;
+                            } else {
+                                return 0;
+                            }
+                        }
+                    })
+                        console.log(mod_results)
+
+                        const status = this.state.status;
+                        status.start = false;
+                        status.finshed = true;
             
+                        //default enable header columns and error
+                        const exportColumns = {};
+                        this.state.header.map(i => exportColumns[i] = true);
+                        exportColumns.error = true;
+                        // exportColumns.XCoordinate = true;
+                        // exportColumns.YCoordinate = true;
+                        // exportColumns.Longitude = true;
+                        // exportColumns.Latitude = true;
+                        
+                        this.setState({
+                            status,
+                            results: mod_results,
+                            exportColumns
+                        });
+            
+                        //backup results
+                        const {header, body, fileName} = this.state;
+                        saveToLocalStorage('block-app', {
+                        header, body, results: mod_results, exportColumns, fileName
+                        });
+
+                    });
+
+                });
+    }
+
+        _updateExportColumn = (column) => {
+            const exportColumns = this.state.exportColumns;
+            exportColumns[column] = !exportColumns[column];
+            this.setState({exportColumns})
+          }
+
+          _handleEditorClose = () => {
+            this.setState({isEditorOpen: false});
+          }
+      
+          _handleEditorOpen = (debug, error, rowIndex) => {
             this.setState({
-            status,
-            results,
-            exportColumns
-            });
-
-            //backup results
-            const {header, body, fileName} = this.state;
-            saveToLocalStorage('block-app', {
-            header, body, results, exportColumns, fileName
-            });
-
+              isEditorOpen: true,
+              currentEdit: {...debug, error, rowIndex}
             })
+          }
 
-        }
+          _editRow = (rowIndex, data) => {
+            const results = this.state.results;
+
+            console.log(rowIndex, data);
+      
+            // results[rowIndex] = data;
+            // this.setState({
+            //   results,
+            //   isEditorOpen: false
+            // }, ()=> {
+            //   //backup results
+            //   const {header, body, fileName, exportColumns} = this.state;
+            //   saveToLocalStorage('res', {
+            //     header, body, results, exportColumns, fileName
+            //   });
+            // });
+          }
 
 
     render(){
@@ -209,7 +291,32 @@ class BlockApp extends Component{
                     fileError={this.state.fileError}
                     options={FORMBLOCKOPTIONS}
                 />
+
+                <ColumnsPicker 
+                    header={this.state.header}
+                    results={this.state.results}
+                    exportColumns={this.state.exportColumns}
+                    _updateExportColumn={this._updateExportColumn}
+                />
+
+                <BlockTableResult 
+                    header={this.state.header} 
+                    body={this.state.body}
+                    results={this.state.results}
+                    exportColumns={this.state.exportColumns}
+                    _handleEditorOpen={this._handleEditorOpen}
+                    fileName={this.state.fileName}
+                />
                 
+
+                <BlockEditor 
+                    open={this.state.isEditorOpen} 
+                    _handleEditorClose={this._handleEditorClose} 
+                    currentEdit={this.state.currentEdit} 
+                    header={this.state.header}
+                    body={this.state.body}
+                    _editRow={this._editRow}
+                />
             </React.Fragment>
         )
     }

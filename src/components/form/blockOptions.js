@@ -9,12 +9,12 @@ const FORMBLOCKOPTIONS = {
             },
             {
                 name: 'CrossStreetOne',
-                required : true,
+                required : false,
                 comments: '1'
             },
             {
                 name: 'CrossStreetTwo',
-                required : true,
+                required : false,
                 comments: '2'
             },
             {
@@ -45,12 +45,12 @@ const FORMBLOCKOPTIONS = {
             },
             {
                 name: 'CrossStreetOne',
-                required : true,
+                required : false,
                 comments: '1'
             },
             {
                 name: 'CrossStreetTwo',
-                required : true,
+                required : false,
                 comments: '2'
             },
             {

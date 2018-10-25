@@ -7,7 +7,7 @@ import queryGeocoder from '../../helpers/queryGeocoder';
 import fieldHelper from '../../helpers/fieldHelper';
 
 
-class DefaultFix extends Component {
+class BlockDefaultFix extends Component {
     
     state = {
         query: null,
@@ -38,7 +38,17 @@ class DefaultFix extends Component {
             return modQuery;
         }, {})
         const { type, rowIndex } = this.props;
-        return queryGeocoder(this.props.type, modQuery)
+
+        let mod_type = this.props.type;
+        //fix the type so the url works for Block functions
+        switch(type){
+            case('extendedStretch_blockface'):
+            case('extendedStretch_intersection'):
+                mod_type = 'Block';
+                break;
+            default:
+        }
+        return queryGeocoder(mod_type, modQuery)
             .then(data=> {
                 const tempEdit = {...data, error: false, rowIndex, debug: {query: modQuery, type, string: JSON.stringify(modQuery)}};
                 this.setState({tempEdit});
@@ -55,11 +65,13 @@ class DefaultFix extends Component {
         const results = () => {
             if(this.state.tempEdit){
                 if(!this.state.tempEdit.error){
+
+                    //pull out geojson using general function
                     const { Latitude,Longitude } = this.state.tempEdit;
                     const position = [parseFloat(Latitude), parseFloat(Longitude)];
                     return (
                         <React.Fragment>
-                                <Map center={position} zoom={18} className="map leaflet-small-container">
+                                {/* <Map center={position} zoom={18} className="map leaflet-small-container">
                                     <TileLayer 
                                         attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors" 
                                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -71,7 +83,7 @@ class DefaultFix extends Component {
                                             </span>
                                         </Popup>
                                     </Marker>
-                            </Map>
+                            </Map> */}
                             <Button.Group className="direction-buttons">
                                 <Button positive onClick={() => this.props._editRow(this.props.rowIndex, this.state.tempEdit)}>Confirm</Button>
                             </Button.Group>
@@ -101,15 +113,15 @@ class DefaultFix extends Component {
                 <Table compact celled>
                     <Table.Header>
                         <Table.Row>
-                            {this.props.header.map(head => (
-                                <Table.HeaderCell key={`editor-table-head-${head}`}>{head}</Table.HeaderCell>
+                            {this.props.header.map((head,i) => (
+                                <Table.HeaderCell key={`editor-table-head-${i}`}>{head}</Table.HeaderCell>
                             ))}
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
                         <Table.Row>
-                            {this.props.body[this.props.rowIndex].map(body=> (
-                                <Table.Cell key={`editor-table-body-${body}`}>{body}</Table.Cell>
+                            {this.props.body[this.props.rowIndex].map((body,i)=> (
+                                <Table.Cell key={`editor-table-body-${i}`}>{body}</Table.Cell>
                             ))}
                         </Table.Row>
                     </Table.Body>
@@ -140,4 +152,4 @@ class DefaultFix extends Component {
 }
 
 
-export default DefaultFix;
+export default BlockDefaultFix;

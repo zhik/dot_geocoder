@@ -36,7 +36,7 @@ class MapPreview extends Component {
     componentWillMount(){
       //load up backup data, only if it is the same version
       if(localStorage.getItem("version") === 'alpha v0.3 working editor!'){
-        const res = loadFromLocalStorage('res');
+        const res = loadFromLocalStorage('app');
         if(res){
           const {header, body, results, exportColumns, fileName} = res;
           this.setState({
