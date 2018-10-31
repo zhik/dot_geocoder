@@ -11,10 +11,16 @@ const TablePreview = ({header, body}) => {
     if(body.length < 5) preview = body.length;
 
     const tableBody = body.slice(0,preview).map((row,i)=> {
+        //fix empty index items
+        let modRow = [];
+        for (let value of row) {
+            modRow.push(value ? value : '');
+        }
+
         return(
             <Table.Row key={`pbody-${i}`}>
                 <Table.Cell key={`pbody-${i}-i`}>{i+1}</Table.Cell>
-                {row.map((cell,i2) => <Table.Cell key={`pbody-${i}-${i2}`}>{cell}</Table.Cell>)}
+                {modRow.map((cell,i2) => <Table.Cell key={`pbody-${i}-${i2}`}>{cell}</Table.Cell>)}
             </Table.Row>       
         );
     });

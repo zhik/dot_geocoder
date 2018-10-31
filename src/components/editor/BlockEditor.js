@@ -92,7 +92,10 @@ class BlockEditor extends Component {
         const { query, type, error, rowIndex } = this.props.currentEdit;
 
         //find error with corresponding fix
-        const fix = Object.keys(fixes).find(fix => error.indexOf(fix) > -1) || null;
+        //const fix = Object.keys(fixes).find(fix => error.indexOf(fix) > -1) || null;
+
+        //temp hold for this fix
+        const fix = null;
 
         return(
             <Modal 

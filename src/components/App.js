@@ -188,7 +188,7 @@ class App extends Component {
       }, ()=> {
         //backup results
         const {header, body, fileName, exportColumns} = this.state;
-        saveToLocalStorage('res', {
+        saveToLocalStorage('app', {
           header, body, results, exportColumns, fileName
         });
       });

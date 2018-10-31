@@ -8,10 +8,10 @@ import queryGeocoder from './queryGeocoder';
 
 export function blockReduce(results) {
     return new Promise(async (resolve, reject) => {
+
         //modify results depend on if it contains the list or error.
         const agg = []
         for (const result of results) {
-
             //check for BlockFaceList, append to list
             if (result.hasOwnProperty('BlockFaceList')) {
                 await Promise.all(result.BlockFaceList.map(async (item, i) => {
@@ -53,13 +53,26 @@ export function blockReduce(results) {
                         })
                         item.geojson = geojson;
                     } else {
-                        //make dummy INPUT DOES NOT DEFINE A STREET SEGMENT
-                        console.log(item, 'error');
+                        //make dummy geojson for INPUT DOES NOT DEFINE A STREET SEGMENT
+                        item.geojson = {
+                            4326: null,
+                            2263: null
+                        };
                     }
+
+                    //add some info to properties 
+                    if(item.geojson[4326] && item.geojson[2263]){
+                        const oft = `${item.OnStreetName}:${item.CrossStreetOneName}:${item.CrossStreetTwoName}`
+                        item.geojson[4326].properties.oft = oft; 
+                        item.geojson[2263].properties.oft = oft;
+                    }
+
+
                     item.rowIndex = result.rowIndex;
                     item.listIndex = i;
                     item.error = false;
                     agg.push(item);
+
                 }))
             } else if (result.hasOwnProperty('IntersectionList')) {
                 result.IntersectionList.forEach((item, i) => {
@@ -75,6 +88,7 @@ export function blockReduce(results) {
                 agg.push(result);
             }
         }
+
         resolve(agg);
 
     })

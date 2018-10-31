@@ -1,11 +1,14 @@
 import React, {Component} from 'react';
 import { Form, Divider, Button, Message, Table, Header } from 'semantic-ui-react'
-import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
+import { Map, TileLayer, GeoJSON } from 'react-leaflet';
 import GoogleMapsLink from './GoogleMapsLink';
 
 import queryGeocoder from '../../helpers/queryGeocoder';
 import fieldHelper from '../../helpers/fieldHelper';
 
+import {blockReduce} from '../../helpers/blockReduce';
+
+import envelope from '@turf/envelope';
 
 class BlockDefaultFix extends Component {
     
@@ -49,9 +52,29 @@ class BlockDefaultFix extends Component {
             default:
         }
         return queryGeocoder(mod_type, modQuery)
-            .then(data=> {
-                const tempEdit = {...data, error: false, rowIndex, debug: {query: modQuery, type, string: JSON.stringify(modQuery)}};
-                this.setState({tempEdit});
+            .then(results=> {
+                blockReduce([results]).then(res => {
+
+                    const data = res.sort((a, b) => {
+                        if (a.rowIndex > b.rowIndex) {
+                            return 1;
+                        } else if (a.rowIndex < b.rowIndex) {
+                            return -1;
+                        } else {
+                            if (a.hasOwnProperty('listIndex') && b.hasOwnProperty('listIndex')) {
+                                return a.listIndex - b.listIndex;
+                            } else {
+                                return 0;
+                            }
+                        }
+                    })
+                
+
+                const tempEdit = { data, error: false, rowIndex, debug: {query: modQuery, type, string: JSON.stringify(modQuery)}};
+                
+                console.log(tempEdit)
+                this.setState({tempEdit});    
+                })
             })
             .catch(error => {
                 const tempEdit = {error , rowIndex, debug: {query: modQuery, type, string: JSON.stringify(modQuery)}};
@@ -67,23 +90,53 @@ class BlockDefaultFix extends Component {
                 if(!this.state.tempEdit.error){
 
                     //pull out geojson using general function
-                    const { Latitude,Longitude } = this.state.tempEdit;
-                    const position = [parseFloat(Latitude), parseFloat(Longitude)];
+                    const geojson = this.state.tempEdit.data.reduce((items, item) => {
+                        if(item.geojson[4326]){
+                            items.features.push(item.geojson[4326]);
+                        }
+                        return items;
+                    },{
+                        "type": "FeatureCollection",
+                        "features": []
+                      })
+                      const bounds = envelope(geojson).geometry.coordinates[0].slice(0,4).map(coor => coor.reverse());
+
+                    const onEachFeature = (feature, layer)=> {
+                        if (feature.properties && feature.properties.segmentID) {
+                            layer.bindPopup(`<p>${feature.properties.oft}</p><p>${feature.properties.segmentID.join(', ')}</p>`);
+                        }
+                    }
+
+                    const getStyle = () => {
+                        // const r = 255;
+                        // const g = Math.floor(Math.random() * 255);
+                        // const b = 255;
+                        // const color= `rgb(${r},${g},${b})`; 
+                        return {
+                            color: 'red',
+                            weight: 10,
+                            opacity: .9
+
+                        }
+                    }
+
+                    const GeoJSONLayer = () => (
+                        <GeoJSON
+                        data={geojson}
+                        style={getStyle}
+                        onEachFeature={onEachFeature}
+                        />
+                    )
+
                     return (
                         <React.Fragment>
-                                {/* <Map center={position} zoom={18} className="map leaflet-small-container">
+                                <Map bounds={bounds} className="map leaflet-small-container">
                                     <TileLayer 
                                         attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors" 
                                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                                     />
-                                    <Marker position={position}>
-                                        <Popup>
-                                            <span>
-                                                <GoogleMapsLink position={position}/>
-                                            </span>
-                                        </Popup>
-                                    </Marker>
-                            </Map> */}
+                            <GeoJSONLayer/>
+                            </Map>
                             <Button.Group className="direction-buttons">
                                 <Button positive onClick={() => this.props._editRow(this.props.rowIndex, this.state.tempEdit)}>Confirm</Button>
                             </Button.Group>
@@ -142,7 +195,7 @@ class BlockDefaultFix extends Component {
                     </Button.Group>
                     <Divider section />
 
-                    {results()}
+                    {results(this.state.tempEdit)}
                     
                 </Form>
             </div>

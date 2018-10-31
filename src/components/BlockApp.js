@@ -254,6 +254,7 @@ class BlockApp extends Component{
 
             console.log(rowIndex, data);
       
+            
             // results[rowIndex] = data;
             // this.setState({
             //   results,
