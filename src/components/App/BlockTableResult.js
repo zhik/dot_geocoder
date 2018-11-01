@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Table, Checkbox } from 'semantic-ui-react'
-import { flatten } from 'flat';
+import flattenFields from '../../helpers/flattenFields';
 
 import exportExcel from '../../helpers/exportExcel';
-import exportShapefile from '../../helpers/exportShapefile';
+import {exportShapefileDirectly} from '../../helpers/exportShapefile';
 import Export from './Export';
 
 class BlockTableResult extends Component {
@@ -27,7 +27,7 @@ class BlockTableResult extends Component {
             //get bodyColumns using rowIndex
             bodyColumnsIndex.map(i => newRow.push(body[row.rowIndex][i]));
 
-            const result = flatten(row, { maxDepth: 2 });
+            const result = flattenFields(row);
             resultColumns.map(i => result[i] || result[i] === 0 ? newRow.push(result[i]) : newRow.push(''));
             
             return newRow;
@@ -35,28 +35,62 @@ class BlockTableResult extends Component {
         exportExcel(this.props.fileName, [exportColumnsTrue, ...resultsBody]);
     }
 
-    _downloadShape = (epsg) => {
-        // const {header,body,results,exportColumns} = this.props;
+    _downloadShape = (_epsg) => {
+        const epsg = parseInt(_epsg, 10);
+        const {header,body, exportColumns, results} = this.props;
+        //filter for only true exportColumns
+        const exportColumnsTrue = Object.keys(exportColumns).filter(i => exportColumns[i]) 
 
-        // //filter for only true exportColumns
-        // const exportColumnsTrue = Object.keys(exportColumns).filter(i => exportColumns[i]) 
+        const bodyColumns = exportColumnsTrue.filter(i => header.indexOf(i) > -1);
+        const resultColumns = exportColumnsTrue.filter(i => header.indexOf(i) === -1);
+        const bodyColumnsIndex = Object.keys(bodyColumns).map(field => header.indexOf(bodyColumns[field]));
 
-        // const bodyColumns = exportColumnsTrue.filter(i => header.indexOf(i) > -1);
-        // const resultColumns = exportColumnsTrue.filter(i => header.indexOf(i) === -1);
-        // const bodyColumnsIndex = Object.keys(bodyColumns).map(field => header.indexOf(bodyColumns[field]));
+        const geojson = results.reduce((geojson, feature) => {
+            let newFeature = {
+                "type": "Feature",
+                "properties": {}
+            };
+            if(feature.geojson && feature.geojson[epsg]){
+                newFeature.geometry = feature.geojson[epsg].geometry;
+            }else{
+                //dummy geometry 
+                const type = {
+                    'Blockface' : "MultiLineString",
+                    'Intersection' : 'Point'
+                }
+                newFeature.geometry = {
+                    "type": type[feature.debug.query.ExtendedStretchType],
+                    "coordinates" : [
+                        [[0,0],[0,0]]
+                    ]
+                }
+            }
 
-        // const resultsBody = body.map((row, rowIndex) => {
-        //     const newRow = [];
 
-        //     //push select columns
-        //     bodyColumnsIndex.map(i => newRow.push(row[i]));
-        //     const result = flatten(results[rowIndex], { maxDepth: 2 });
-        //     resultColumns.map(i => result[i] ? newRow.push(result[i]) : newRow.push(''));
+            //fix headers https://support.esri.com/en/technical-article/000005588
+            //first remove _ underscores in the beginning
+            //next replace illegal characters with _ underscores 
 
-        //     return newRow
-        // })
 
-        // exportShapefile(this.props.fileName, exportColumnsTrue, resultsBody, epsg);
+            //copy properties from body of org. excel
+            bodyColumnsIndex.forEach((bodyIndex,i) => newFeature.properties[bodyColumns[i].replace(/[^a-z0-9_]+/gi,'_').replace(/^_+/gi,'')] = body[feature.rowIndex][bodyIndex]);
+
+            //copy properties from results
+            const properties_flatten = flattenFields(feature);
+
+
+            resultColumns.forEach(column => newFeature.properties[column.replace(/[^a-z0-9_]+/gi,'_').replace(/^_+/gi,'')] = properties_flatten[column]);
+
+            geojson.features.push(newFeature);
+
+            return geojson;
+        }, {
+            "type": "FeatureCollection",
+            "features": []
+        });
+
+        console.log(geojson)
+        exportShapefileDirectly(this.props.fileName, geojson , epsg);
     }
 
     render(){
@@ -77,7 +111,7 @@ class BlockTableResult extends Component {
             //get bodyColumns using rowIndex
             bodyColumnsIndex.map(i => newRow.push(body[row.rowIndex][i]));
 
-            const result = flatten(row, { maxDepth: 2 });
+            const result = flattenFields(row);
             resultColumns.map(i => result[i] || result[i] === 0 ? newRow.push(result[i]) : newRow.push(''));
             
             return newRow;
@@ -129,7 +163,7 @@ class BlockTableResult extends Component {
 
         return(
             <React.Fragment>
-                <Export _downloadExcel={this._downloadExcel} _downloadShape={this._downloadShape} exportColumns={this.props.exportColumns}>
+                <Export type={'block'} _downloadExcel={this._downloadExcel} _downloadShape={this._downloadShape} exportColumns={this.props.exportColumns}>
                     <Checkbox toggle label="Filter Errors" checked={this.state.filterError} onChange={() => this.setState({filterError : !this.state.filterError})}/>
                     
                 </Export>

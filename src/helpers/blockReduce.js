@@ -6,7 +6,7 @@
 import queryGeocoder from './queryGeocoder';
 
 
-export function blockReduce(results) {
+export function blockReduce(results, type) {
     return new Promise(async (resolve, reject) => {
 
         //modify results depend on if it contains the list or error.
@@ -54,23 +54,46 @@ export function blockReduce(results) {
                         item.geojson = geojson;
                     } else {
                         //make dummy geojson for INPUT DOES NOT DEFINE A STREET SEGMENT
+                        const geometryType = {
+                            'extendedStretch_blockface': 'MultiLineString',
+                            'extendedStretch_intersection': 'Point'
+                        }
+
                         item.geojson = {
-                            4326: null,
-                            2263: null
+                            4326: {
+                                "type": "Feature",
+                                "properties": {
+                                    "dummy": true
+                                },
+                                "geometry": {
+                                    "type": geometryType.hasOwnProperty(type) ? geometryType[type] : null,
+                                    "coordinates" : [
+                                        [[0,0],[0,0]]
+                                    ]
+                                }
+                            },
+                            2263: {
+                                "type": "Feature",
+                                "geometry": {
+                                    "type": geometryType.hasOwnProperty(type) ? geometryType[type] : null,
+                                    "coordinates" : [
+                                        [[0,0],[0,0]]
+                                    ]
+                                }
+                            }
                         };
                     }
 
                     //add some info to properties 
-                    if(item.geojson[4326] && item.geojson[2263]){
+                    if(item.geojson[4326].properties && item.geojson[2263].properties){
                         const oft = `${item.OnStreetName}:${item.CrossStreetOneName}:${item.CrossStreetTwoName}`
                         item.geojson[4326].properties.oft = oft; 
                         item.geojson[2263].properties.oft = oft;
                     }
-
-
+                    
                     item.rowIndex = result.rowIndex;
                     item.listIndex = i;
-                    item.error = false;
+                    item.error = '';
                     agg.push(item);
 
                 }))
@@ -81,7 +104,7 @@ export function blockReduce(results) {
 
                     item.rowIndex = result.rowIndex;
                     item.listIndex = i;
-                    item.error = false;
+                    item.error = '';
                     agg.push(item);
                 });
             } else {

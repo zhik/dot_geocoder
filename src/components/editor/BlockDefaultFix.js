@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import { Form, Divider, Button, Message, Table, Header } from 'semantic-ui-react'
 import { Map, TileLayer, GeoJSON } from 'react-leaflet';
-import GoogleMapsLink from './GoogleMapsLink';
 
 import queryGeocoder from '../../helpers/queryGeocoder';
 import fieldHelper from '../../helpers/fieldHelper';
@@ -53,7 +52,9 @@ class BlockDefaultFix extends Component {
         }
         return queryGeocoder(mod_type, modQuery)
             .then(results=> {
-                blockReduce([results]).then(res => {
+
+                results.rowIndex = rowIndex;
+                blockReduce([results], type).then(res => {
 
                     const data = res.sort((a, b) => {
                         if (a.rowIndex > b.rowIndex) {
@@ -71,8 +72,7 @@ class BlockDefaultFix extends Component {
                 
 
                 const tempEdit = { data, error: false, rowIndex, debug: {query: modQuery, type, string: JSON.stringify(modQuery)}};
-                
-                console.log(tempEdit)
+                console.log(data)
                 this.setState({tempEdit});    
                 })
             })
@@ -89,9 +89,9 @@ class BlockDefaultFix extends Component {
             if(this.state.tempEdit){
                 if(!this.state.tempEdit.error){
 
-                    //pull out geojson using general function
+                    //pull out geojson using general function and exclude dummy 
                     const geojson = this.state.tempEdit.data.reduce((items, item) => {
-                        if(item.geojson[4326]){
+                        if(item.geojson[4326] && !item.geojson[4326].properties.dummy){
                             items.features.push(item.geojson[4326]);
                         }
                         return items;

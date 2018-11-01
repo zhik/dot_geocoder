@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import { Checkbox, Label ,Popup, Icon } from 'semantic-ui-react';
-import { flatten } from 'flat';
+import flattenFields from '../../helpers/flattenFields';
 
 class ColumnsPicker extends Component {
 
@@ -14,7 +14,7 @@ class ColumnsPicker extends Component {
 
     
         const sample = this.props.results.find(i => !i.error) || [];
-        const rcolumns = flatten(sample, { maxDepth: 2 })
+        const rcolumns = flattenFields(sample)
         const frcolumns = Object.keys(rcolumns).filter(i => typeof(rcolumns[i]) !== 'object');
             
         const columns = [...this.props.header, ...frcolumns].map( i => (

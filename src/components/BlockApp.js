@@ -186,7 +186,7 @@ class BlockApp extends Component{
                 //To-do add await instead of chaining promises
 
                 //get block results and sort by rowIndex and listIndex 
-                blockReduce(results).then(res => {
+                blockReduce(results,type).then(res => {
                     const mod_results = res.sort((a, b) => {
                         if (a.rowIndex > b.rowIndex) {
                             return 1;
@@ -210,10 +210,6 @@ class BlockApp extends Component{
                         const exportColumns = {};
                         this.state.header.map(i => exportColumns[i] = true);
                         exportColumns.error = true;
-                        // exportColumns.XCoordinate = true;
-                        // exportColumns.YCoordinate = true;
-                        // exportColumns.Longitude = true;
-                        // exportColumns.Latitude = true;
                         
                         this.setState({
                             status,
@@ -252,20 +248,41 @@ class BlockApp extends Component{
           _editRow = (rowIndex, data) => {
             const results = this.state.results;
 
-            console.log(rowIndex, data);
+            
+            //find and remove error item
+            const errorIndex = results.findIndex(result => result.rowIndex === rowIndex);
+            console.log(errorIndex);
+            if(errorIndex > -1) results.splice(errorIndex, 1);
+
+
+            //concat items and sort 
+            const mod_results = results.concat(data.data).sort((a, b) => {
+                if (a.rowIndex > b.rowIndex) {
+                    return 1;
+                } else if (a.rowIndex < b.rowIndex) {
+                    return -1;
+                } else {
+                    if (a.hasOwnProperty('listIndex') && b.hasOwnProperty('listIndex')) {
+                        return a.listIndex - b.listIndex;
+                    } else {
+                        return 0;
+                    }
+                }
+            });
+
+            console.log(mod_results);
       
             
-            // results[rowIndex] = data;
-            // this.setState({
-            //   results,
-            //   isEditorOpen: false
-            // }, ()=> {
-            //   //backup results
-            //   const {header, body, fileName, exportColumns} = this.state;
-            //   saveToLocalStorage('res', {
-            //     header, body, results, exportColumns, fileName
-            //   });
-            // });
+            this.setState({
+              results: mod_results,
+              isEditorOpen: false
+            }, ()=> {
+              //backup results
+              const {header, body, fileName, exportColumns} = this.state;
+              saveToLocalStorage('block-app', {
+                header, body, results: mod_results, exportColumns, fileName
+              });
+            });
           }
 
 
