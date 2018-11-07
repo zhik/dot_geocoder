@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import Navbar from './Navbar';
-import { Map, TileLayer, Marker, Popup } from 'react-leaflet';
+import { Map, TileLayer, GeoJSON } from 'react-leaflet';
 import { Message } from 'semantic-ui-react'
 
+import envelope from '@turf/envelope';
+
 import L from 'leaflet';
-import TableResult from './App/TableResult';
+import BlockTableResult from './App/BlockTableResult';
 import ColumnsPicker from './App/ColumnsPicker';
 
 import {loadFromLocalStorage} from '../helpers/localStorage';
@@ -36,7 +38,7 @@ class MapPreview extends Component {
     componentWillMount(){
       //load up backup data, only if it is the same version
       if(localStorage.getItem("version") === 'v1.1'){
-        const res = loadFromLocalStorage('app');
+        const res = loadFromLocalStorage('block-app');
         if(res){
           const {header, body, results, exportColumns, fileName} = res;
           this.setState({
@@ -70,16 +72,46 @@ class MapPreview extends Component {
         }
     }
 
-    render(){
-        const points = this.state.results.reduce((points,res)=>{
-            if(res.Latitude && res.Longitude){
-                points.push({
-                    position: [parseFloat(res.Latitude), parseFloat(res.Longitude)],
-                    rowIndex: res.rowIndex
-                })
-            }   
-            return points;
-        },[])
+    render() {
+            //pull out geojson using general function and exclude dummy 
+            const geojson = this.state.results.reduce((items, item) => {
+                if (item.geojson && item.geojson[4326] && !item.geojson[4326].properties.dummy) {
+                    items.features.push(item.geojson[4326]);
+                }
+                return items;
+            }, {
+                "type": "FeatureCollection",
+                "features": []
+            })
+            const bounds = envelope(geojson).geometry.coordinates[0].slice(0, 4).map(coor => coor.reverse());
+
+            const onEachFeature = (feature, layer) => {
+                if (feature.properties && feature.properties.segmentID) {
+                    layer.bindPopup(`<p>${feature.properties.oft}</p><p>${feature.properties.segmentID.join(', ')}</p>`);
+                }
+            }
+
+            const getStyle = () => {
+                // const r = 255;
+                // const g = Math.floor(Math.random() * 255);
+                // const b = 255;
+                // const color= `rgb(${r},${g},${b})`; 
+                return {
+                    color: 'red',
+                    weight: 10,
+                    opacity: .9
+
+                }
+            }
+
+        const GeoJSONLayer = () => (
+            <GeoJSON
+            data={geojson}
+            style={getStyle}
+            onEachFeature={onEachFeature}
+            />
+        )
+
         return(
             <React.Fragment>
                 <Navbar 
@@ -89,7 +121,7 @@ class MapPreview extends Component {
                 <div className="panel">
                     <div className="left-panel">
                     <Map 
-                        zoom={this.state.zoom} 
+                        bounds={bounds}
                         className="map leaflet-full-container"
                         viewport={this.state.viewport}>
                     >
@@ -97,22 +129,14 @@ class MapPreview extends Component {
                         attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         />
-                        {points.map((point,i) => 
-                            <Marker key={`marker-${i}`} position={point.position}>
-                            <Popup>
-                                <span>
-                                {point.rowIndex + 1}
-                                </span>
-                            </Popup>
-                            </Marker>
-                        )}
+                        <GeoJSONLayer/>
                     </Map>
                 
                 </div>
 
                 <div className="right-panel">
                     <div className='message'>
-                        {points.length ? null : <Message negative><Message.Header>No points</Message.Header><p>Please go back to home and geocode something</p></Message>}
+                        {geojson.features.length ? null : <Message negative><Message.Header>No features</Message.Header><p>Please go back to "Block" and geocode something</p></Message>}
                     </div>
 
                             
@@ -123,7 +147,7 @@ class MapPreview extends Component {
                         _updateExportColumn={this._updateExportColumn}
                     />
 
-                    <TableResult 
+                    <BlockTableResult 
                         header={this.state.header} 
                         body={this.state.body}
                         results={this.state.results}

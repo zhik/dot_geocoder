@@ -105,6 +105,7 @@ export function blockReduce(results, type) {
                     item.geojson = {
                         4326: {
                             "type": "Feature",
+                            "properties": {},
                             "geometry": {
                                 "type": "Point",
                                 "coordinates": [Longitude, Latitude]
@@ -112,6 +113,7 @@ export function blockReduce(results, type) {
                         },
                         2263: {
                             "type": "Feature",
+                            "properties": {},
                             "geometry": {
                                 "type": "Point",
                                 "coordinates": [XCoordinate, YCoordinate]

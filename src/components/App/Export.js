@@ -26,6 +26,14 @@ const Export = ({ exportColumns, _downloadExcel, _downloadShape, children, type}
         />
     )
 
+    const mapButton = () => {
+        switch(type){
+            case 'block':
+                return <Button icon="map" size='tiny' content={<NavLink to="/blockmap">View on Map</NavLink>}/>;
+            default:
+                return <Button icon="map" size='tiny' content={<NavLink to="/map">View on Map</NavLink>}/>;
+        }
+    }
     return (
         <div className="section">
             <Label as='a' color='olive' ribbon='left'>4</Label>
@@ -47,7 +55,7 @@ const Export = ({ exportColumns, _downloadExcel, _downloadShape, children, type}
                     Exports to WGS 84 - Used by most web maps
                 </Popup.Content>    
             </Popup>
-            <Button icon="map" size='tiny' content={<NavLink to="/map">View on Map</NavLink>}/>
+            {mapButton()}
             {children}
         </div>
     )

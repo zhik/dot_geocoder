@@ -40,7 +40,7 @@ class BlockApp extends Component{
 
     componentWillMount(){
         //load up backup data, only if it is the same version
-        if(localStorage.getItem("version") === 'alpha v0.3 working editor!'){
+        if(localStorage.getItem("version") === 'v1.1'){
           const res = loadFromLocalStorage('block-app');
           if(res){
             const {header, body, results, exportColumns, fileName} = res;
@@ -49,7 +49,7 @@ class BlockApp extends Component{
             });
           }
         }else{
-          localStorage.setItem('version','alpha v0.3 working editor!');
+          localStorage.setItem('version','v1.1');
         }
       }
   
