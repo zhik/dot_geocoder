@@ -68,7 +68,7 @@ export function blockReduce(results, type) {
                                 "geometry": {
                                     "type": geometryType.hasOwnProperty(type) ? geometryType[type] : null,
                                     "coordinates" : [
-                                        [[0,0],[0,0]]
+                                        [[undefined,undefined],[undefined,undefined]]
                                     ]
                                 }
                             },
@@ -77,7 +77,7 @@ export function blockReduce(results, type) {
                                 "geometry": {
                                     "type": geometryType.hasOwnProperty(type) ? geometryType[type] : null,
                                     "coordinates" : [
-                                        [[0,0],[0,0]]
+                                        [[undefined,undefined],[undefined,undefined]]
                                     ]
                                 }
                             }
@@ -101,6 +101,23 @@ export function blockReduce(results, type) {
                 result.IntersectionList.forEach((item, i) => {
                     //format geojson of node
 
+                    const {XCoordinate, YCoordinate, Longitude, Latitude} = item;
+                    item.geojson = {
+                        4326: {
+                            "type": "Feature",
+                            "geometry": {
+                                "type": "Point",
+                                "coordinates": [Longitude, Latitude]
+                            }
+                        },
+                        2263: {
+                            "type": "Feature",
+                            "geometry": {
+                                "type": "Point",
+                                "coordinates": [XCoordinate, YCoordinate]
+                            }
+                        },
+                    }
 
                     item.rowIndex = result.rowIndex;
                     item.listIndex = i;

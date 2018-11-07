@@ -19,10 +19,15 @@ export default function flattenFields(obj){
         if(['CrossStreetOne','CrossStreetTwo','IntersectingStreets'].some(unqiueKey => !keyArray.includes('debug') && keyArray.includes(unqiueKey))){
             //remove the unqiue item from array, usally the 2nd item
             const name = keyArray.splice(1,1)[0];
-            commonFlat[keyArray.join('.')] = safeFlat[key];
+            if(safeFlat[key]){
+                commonFlat[keyArray.join('.')] = concatUnqiue(commonFlat[keyArray.join('.')], safeFlat[key]);
+            }
 
-            //add new key with the name of the unqiue field
-            commonFlat[`${keyArray[0]}.Name`] = name; 
+            if(keyArray[0] && name){
+                //add new key with the name of the unqiue field
+                commonFlat[`${keyArray[0]}.Name`] = concatUnqiue(commonFlat[`${keyArray[0]}.Name`], name);
+            }
+
             
         }else if(['geojson'].some(removeKey => keyArray.includes(removeKey))){
             //don't include some fields
@@ -52,4 +57,14 @@ export default function flattenFields(obj){
     
 
     return arrayFlat;
+}
+
+function concatUnqiue(field, value){
+    //return value, if unqiue append to value.
+    if(field){
+        if(!field.includes(value)){
+            return `${field}, ${value}`;
+        }
+    }
+    return value;
 }

@@ -61,7 +61,7 @@ class BlockTableResult extends Component {
                 newFeature.geometry = {
                     "type": type[feature.debug.query.ExtendedStretchType],
                     "coordinates" : [
-                        [[0,0],[0,0]]
+                        [[undefined,undefined],[undefined,undefined]]
                     ]
                 }
             }
