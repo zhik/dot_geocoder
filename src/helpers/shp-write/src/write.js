@@ -21,7 +21,6 @@ module.exports = write;
 
 // Low-level writing interface
 function write(rows, geometry_type, geometries, callback) {
-    console.log(rows, geometries);
     var TYPE = types.geometries[geometry_type],
         writer = writers[TYPE],
         parts = writer.parts(geometries, TYPE),

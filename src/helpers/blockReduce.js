@@ -59,6 +59,11 @@ export function blockReduce(results, type) {
                             'extendedStretch_intersection': 'Point'
                         }
 
+                        const geometryDummy = {
+                            'extendedStretch_blockface': [[[0,0],[0,0]]],
+                            'extendedStretch_intersection': [0,0]
+                        }
+
                         item.geojson = {
                             4326: {
                                 "type": "Feature",
@@ -67,18 +72,14 @@ export function blockReduce(results, type) {
                                 },
                                 "geometry": {
                                     "type": geometryType.hasOwnProperty(type) ? geometryType[type] : null,
-                                    "coordinates" : [
-                                        [[undefined,undefined],[undefined,undefined]]
-                                    ]
+                                    "coordinates" : geometryDummy.hasOwnProperty(type) ? geometryDummy[type] : null,
                                 }
                             },
                             2263: {
                                 "type": "Feature",
                                 "geometry": {
                                     "type": geometryType.hasOwnProperty(type) ? geometryType[type] : null,
-                                    "coordinates" : [
-                                        [[undefined,undefined],[undefined,undefined]]
-                                    ]
+                                    "coordinates" : geometryDummy.hasOwnProperty(type) ? geometryDummy[type] : null,
                                 }
                             }
                         };
@@ -101,14 +102,17 @@ export function blockReduce(results, type) {
                 result.IntersectionList.forEach((item, i) => {
                     //format geojson of node
 
-                    const {XCoordinate, YCoordinate, Longitude, Latitude} = item;
+                    let {XCoordinate, YCoordinate, Longitude, Latitude, LionNodeNumber} = item;
+
                     item.geojson = {
                         4326: {
                             "type": "Feature",
-                            "properties": {},
+                            "properties": {
+                                LionNodeNumber
+                            },
                             "geometry": {
                                 "type": "Point",
-                                "coordinates": [Longitude, Latitude]
+                                "coordinates": [Longitude ? Longitude : undefined, Latitude ? Latitude : undefined]
                             }
                         },
                         2263: {
@@ -116,7 +120,7 @@ export function blockReduce(results, type) {
                             "properties": {},
                             "geometry": {
                                 "type": "Point",
-                                "coordinates": [XCoordinate, YCoordinate]
+                                "coordinates": [XCoordinate ? XCoordinate : undefined, YCoordinate ? YCoordinate : undefined]
                             }
                         },
                     }
@@ -135,12 +139,3 @@ export function blockReduce(results, type) {
 
     })
 }
-
-
-// temp1.reduce((p,i) => {
-// 	if(i.hasOwnProperty('geojson')){
-// 		p.push(i.geojson[4326])
-
-// 	}
-// 	return p
-// },[])

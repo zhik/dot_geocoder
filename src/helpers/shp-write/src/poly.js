@@ -112,7 +112,7 @@ function justCoords(coords, l) {
         return coords.reduce(function(memo, c) {
             return memo.concat(justCoords(c));
         }, l);
-    } else {
+    }else {
         return coords;
     }
 }

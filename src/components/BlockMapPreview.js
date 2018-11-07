@@ -4,6 +4,7 @@ import { Map, TileLayer, GeoJSON } from 'react-leaflet';
 import { Message } from 'semantic-ui-react'
 
 import envelope from '@turf/envelope';
+import checkCoordinatesError from '../helpers/checkCoordinatesError';
 
 import L from 'leaflet';
 import BlockTableResult from './App/BlockTableResult';
@@ -75,7 +76,7 @@ class MapPreview extends Component {
     render() {
             //pull out geojson using general function and exclude dummy 
             const geojson = this.state.results.reduce((items, item) => {
-                if (item.geojson && item.geojson[4326] && !item.geojson[4326].properties.dummy) {
+                if (item.geojson && item.geojson[4326] && !item.geojson[4326].properties.dummy && !checkCoordinatesError(item.geojson[4326].geometry.coordinates)) {
                     items.features.push(item.geojson[4326]);
                 }
                 return items;
@@ -83,11 +84,15 @@ class MapPreview extends Component {
                 "type": "FeatureCollection",
                 "features": []
             })
+            console.log(geojson)
+
             const bounds = envelope(geojson).geometry.coordinates[0].slice(0, 4).map(coor => coor.reverse());
 
             const onEachFeature = (feature, layer) => {
                 if (feature.properties && feature.properties.segmentID) {
                     layer.bindPopup(`<p>${feature.properties.oft}</p><p>${feature.properties.segmentID.join(', ')}</p>`);
+                }else if(feature.properties && feature.properties.LionNodeNumber){
+                    layer.bindPopup(`<p>${feature.properties.LionNodeNumber}</p>`)
                 }
             }
 
