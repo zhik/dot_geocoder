@@ -1,6 +1,36 @@
 import { download } from 'shp-write'; 
 
-const exportShapefile = (fileName, header, body, epsg) => {
+/**
+ * directly exports from geojson FeatureCollection
+ */
+export const exportShapefileDirectly = (fileName, geojson, epsg) => {
+    //write to shp.zip
+
+    const shp_options = {
+        folder: fileName,
+            types: {
+                point: fileName,
+                line: fileName
+            },
+        epsg: epsg
+    };
+
+
+    download(geojson , shp_options);
+}
+
+
+/**
+ * converts from header, body format to geojson and exports 
+ * 
+ * @param {*} fileName 
+ * @param {*} header 
+ * @param {*} body 
+ * @param {*} epsg 
+ */
+export const exportShapefile = (fileName, header, body, epsg) => {
+
+
     //if( !((header.indexOf("Longitude") > -1 && header.indexOf("Latitude") > -1 ))) return null
 
     let x, y;
@@ -61,5 +91,3 @@ const exportShapefile = (fileName, header, body, epsg) => {
 
     download(geojson , shp_options);
 }
-
-export default exportShapefile;

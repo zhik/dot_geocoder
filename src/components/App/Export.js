@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Popup,Label } from 'semantic-ui-react'
 import { NavLink } from 'react-router-dom'
 
-const Export = ({ exportColumns, _downloadExcel, _downloadShape, children }) => {
+const Export = ({ exportColumns, _downloadExcel, _downloadShape, children, type}) => {
     //filter for only true exportColumns
     const exportColumnsTrue = Object.keys(exportColumns).filter(i => exportColumns[i]);
 
@@ -12,7 +12,7 @@ const Export = ({ exportColumns, _downloadExcel, _downloadShape, children }) => 
             content='Shapefile NAD83(2263)'
             icon='world'
             onClick={() => _downloadShape(2263)}
-            disabled={!(exportColumnsTrue.indexOf("XCoordinate") > -1 && exportColumnsTrue.indexOf("YCoordinate") > -1)}
+            disabled={!type && (!(exportColumnsTrue.indexOf("XCoordinate") > -1 && exportColumnsTrue.indexOf("YCoordinate") > -1))}
         />
     )
 
@@ -22,15 +22,23 @@ const Export = ({ exportColumns, _downloadExcel, _downloadShape, children }) => 
             content='Shapefile WGS84(4326)'
             icon='world'
             onClick={() => _downloadShape(4326)}
-            disabled={!(exportColumnsTrue.indexOf("Longitude") > -1 && exportColumnsTrue.indexOf("Latitude") > -1)}
+            disabled={!type && (!(exportColumnsTrue.indexOf("Longitude") > -1 && exportColumnsTrue.indexOf("Latitude") > -1))}
         />
     )
 
+    const mapButton = () => {
+        switch(type){
+            case 'block':
+                return <Button icon="map" size='tiny' content={<NavLink to="/blockmap">View on Map</NavLink>}/>;
+            default:
+                return <Button icon="map" size='tiny' content={<NavLink to="/map">View on Map</NavLink>}/>;
+        }
+    }
     return (
         <div className="section">
             <Label as='a' color='olive' ribbon='left'>4</Label>
             <h3>Download</h3>
-            <p>NAD83(2263) is used by the DOT,  WGS84(4326) is used by Web Maps(Google, Bing, etc) - to enable WSG84 include Latitude and Longitude in Export Columns</p>
+            <p>{`NAD83(2263) is used by the DOT,  WGS84(4326) is used by Web Maps(Google, Bing, etc) ${type !== 'block' ? '- to enable WSG84 include Latitude and Longitude in Export Columns': ''}`}</p>
             <Button
                 color='grey'
                 content='CSV/Excel'
@@ -47,7 +55,7 @@ const Export = ({ exportColumns, _downloadExcel, _downloadShape, children }) => 
                     Exports to WGS 84 - Used by most web maps
                 </Popup.Content>    
             </Popup>
-            <Button icon="map" size='tiny' content={<NavLink to="/map">View on Map</NavLink>}/>
+            {mapButton()}
             {children}
         </div>
     )

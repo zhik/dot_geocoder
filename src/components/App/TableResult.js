@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Table, Checkbox } from 'semantic-ui-react'
-import { flatten } from 'flat';
+import flattenFields from '../../helpers/flattenFields';
 
 import exportExcel from '../../helpers/exportExcel';
-import exportShapefile from '../../helpers/exportShapefile';
+import {exportShapefile} from '../../helpers/exportShapefile';
 import Export from './Export';
 
 class TableResult extends Component {
@@ -27,7 +27,7 @@ class TableResult extends Component {
 
             //push select columns
             bodyColumnsIndex.map(i => newRow.push(row[i]));
-            const result = flatten(results[rowIndex], { maxDepth: 2 });
+            const result = flattenFields(results[rowIndex], { maxDepth: 2, safe: true });
             resultColumns.map(i => result[i] ? newRow.push(result[i]) : newRow.push(''));
 
             return newRow
@@ -50,7 +50,7 @@ class TableResult extends Component {
 
             //push select columns
             bodyColumnsIndex.map(i => newRow.push(row[i]));
-            const result = flatten(results[rowIndex], { maxDepth: 2 });
+            const result = flattenFields(results[rowIndex], { maxDepth: 2, safe: true });
             resultColumns.map(i => result[i] ? newRow.push(result[i]) : newRow.push(''));
 
             return newRow
@@ -76,7 +76,7 @@ class TableResult extends Component {
 
             //push select columns
             bodyColumnsIndex.map(i => newRow.push(row[i]));
-            const result = flatten(results[rowIndex], { maxDepth: 2 });
+            const result = flattenFields(results[rowIndex], { maxDepth: 2, safe: true });
             resultColumns.map(i => result[i] ? newRow.push(result[i]) : newRow.push(''));
 
             return newRow

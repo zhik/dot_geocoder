@@ -10,10 +10,10 @@ const Navbar = ({location}) => {
             <img className='logo' src={logo} alt='dot-logo'/> 
             web batch geocoder 
             <Label color='green'>
-            v1
+            v 1.1
             </Label>
             <div className='nav-links'>
-                <Menu pointing size='mini' color='teal'>
+                <Menu pointing size='tiny' color='teal'>
                     <Menu.Item active={location === '/'}>
                         <NavLink to="/">Home</NavLink>
                     </Menu.Item>

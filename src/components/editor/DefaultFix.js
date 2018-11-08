@@ -59,7 +59,7 @@ class DefaultFix extends Component {
                     const position = [parseFloat(Latitude), parseFloat(Longitude)];
                     return (
                         <React.Fragment>
-                            <Map center={position} zoom={18} className="map leaflet-small-container">
+                                <Map center={position} zoom={18} className="map leaflet-small-container">
                                     <TileLayer 
                                         attribution="&amp;copy <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors" 
                                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

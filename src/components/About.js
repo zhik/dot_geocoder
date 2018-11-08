@@ -1,3 +1,4 @@
+//deals with single point returns like address and intersects
 import React, { Component } from 'react';
 import Navbar from './Navbar';
 import ChangeLog from './About/ChangeLog';
@@ -20,10 +21,10 @@ class About extends Component {
 
                     <ol>
                         <li>Upload a spreadsheet (csv, excel)<Icon color='green' name='checkmark'/></li>
-                        <li>Geocode Using different functions (Address, Intersection, Block)</li>
+                        <li>Geocode Using different functions (Address, Intersection, Block)<Icon color='green' name='checkmark'/></li>
                         <li>Select the columns, I want to use for the query.<Icon color='green' name='checkmark'/></li>
                         <li>Preview the spreadsheet<Icon color='green' name='checkmark'/></li>
-                        <li>Preview errors and correct for field or location errors</li>
+                        <li>Preview errors and correct for field or location errors<Icon color='green' name='checkmark'/></li>
                         <li>Download data in excel, geojson or shapefile<Icon color='green' name='checkmark'/></li>
                     </ol>
 

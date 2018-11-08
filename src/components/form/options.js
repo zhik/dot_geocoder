@@ -1,4 +1,4 @@
-const options = {
+const FORMOPTIONS = {
     exactAddress: {
         name: 'Exact Address',
         fields: [
@@ -99,4 +99,4 @@ const options = {
     // },
 }
 
-export default options;
+export default FORMOPTIONS;

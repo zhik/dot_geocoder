@@ -1,8 +1,7 @@
 import React from 'react';
-import options from './options';
 import { Form, Select, Popup, Button, Message } from 'semantic-ui-react'
 
-const Fields = ({ header,selectedType, fields, _changeField, _changeStep }) => {
+const Fields = ({ header,selectedType, fields, _changeField, _changeStep, options}) => {
     const optionsfields = options[selectedType].fields;
     
     return(

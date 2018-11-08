@@ -8,6 +8,7 @@ import {saveToLocalStorage, loadFromLocalStorage} from '../helpers/localStorage'
 import fieldHelper from '../helpers/fieldHelper';
 
 import Navbar from './Navbar';
+import FORMOPTIONS from './form/options';
 import Form from './form/Form';
 import FileUpload from './App/FileUpload';
 import TablePreview from './App/TablePreview';
@@ -38,8 +39,8 @@ class App extends Component {
 
     componentWillMount(){
       //load up backup data, only if it is the same version
-      if(localStorage.getItem("version") === 'alpha v0.3 working editor!'){
-        const res = loadFromLocalStorage('res');
+      if(localStorage.getItem("version") === 'v1.1'){
+        const res = loadFromLocalStorage('app');
         if(res){
           const {header, body, results, exportColumns, fileName} = res;
           this.setState({
@@ -47,7 +48,7 @@ class App extends Component {
           });
         }
       }else{
-        localStorage.setItem('version','alpha v0.3 working editor!');
+        localStorage.setItem('version','v1.1');
       }
     }
 
@@ -152,7 +153,7 @@ class App extends Component {
 
         //backup results
         const {header, body, fileName} = this.state;
-        saveToLocalStorage('res', {
+        saveToLocalStorage('app', {
           header, body, results, exportColumns, fileName
         });
 
@@ -187,7 +188,7 @@ class App extends Component {
       }, ()=> {
         //backup results
         const {header, body, fileName, exportColumns} = this.state;
-        saveToLocalStorage('res', {
+        saveToLocalStorage('app', {
           header, body, results, exportColumns, fileName
         });
       });
@@ -217,7 +218,8 @@ class App extends Component {
           fields={this.state.fields}
           status={this.state.status}
           queryApi={this.queryApi}
-          fileError={this.fileError}
+          fileError={this.state.fileError}
+          options={FORMOPTIONS}
         />
 
         <ColumnsPicker 
