@@ -42,6 +42,9 @@ class About extends Component {
 
                 <ChangeLog />
 
+                <div className="section">
+                    <p>made for interns ❤</p>
+                </div>
 
             </div>
         )
