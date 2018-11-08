@@ -122,7 +122,6 @@ class BlockApp extends Component{
                 case 'extendedStretch_blockface':
                     queryObject['BlockType'] = 'ExtendedStretch';
                     queryObject['ExtendedStretchType'] = 'Blockface';
-
                     break;
                 case 'extendedStretch_intersection':
                     queryObject['BlockType'] = 'ExtendedStretch';
@@ -200,7 +199,6 @@ class BlockApp extends Component{
                             }
                         }
                     })
-                        console.log(mod_results)
 
                         const status = this.state.status;
                         status.start = false;
@@ -251,7 +249,7 @@ class BlockApp extends Component{
             
             //find and remove error item
             const errorIndex = results.findIndex(result => result.rowIndex === rowIndex);
-            console.log(errorIndex);
+
             if(errorIndex > -1) results.splice(errorIndex, 1);
 
 
@@ -269,10 +267,7 @@ class BlockApp extends Component{
                     }
                 }
             });
-
-            console.log(mod_results);
-      
-            
+  
             this.setState({
               results: mod_results,
               isEditorOpen: false

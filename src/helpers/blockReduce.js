@@ -94,7 +94,7 @@ export function blockReduce(results, type) {
                     
                     item.rowIndex = result.rowIndex;
                     item.listIndex = i;
-                    item.error = '';
+                    item.error = item.GeoSupportError ? item.GeoSupportError : ''; 
                     agg.push(item);
 
                 }))
@@ -127,7 +127,7 @@ export function blockReduce(results, type) {
 
                     item.rowIndex = result.rowIndex;
                     item.listIndex = i;
-                    item.error = '';
+                    item.error = item.GeoSupportError ? item.GeoSupportError : '';
                     agg.push(item);
                 });
             } else {

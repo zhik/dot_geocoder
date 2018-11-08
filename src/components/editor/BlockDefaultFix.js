@@ -21,9 +21,15 @@ class BlockDefaultFix extends Component {
 
     componentWillMount(){
         const query = this.props.query;
-        if(this.props.type === 'intersection'){
-            query.CompassDirection = '';
-            query.NodeId = '';
+        //add extra fields if certain type
+        switch(this.props.type){
+            case 'extendedStretch_blockface':
+            case 'extendedStretch_intersection':
+                query.CompassDirectionOne = '';
+                query.CompassDirectionTwo = '';
+                break;
+            default:
+
         }
         this.setState({query: this.props.query});
     }

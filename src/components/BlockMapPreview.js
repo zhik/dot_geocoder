@@ -84,7 +84,6 @@ class MapPreview extends Component {
                 "type": "FeatureCollection",
                 "features": []
             })
-            console.log(geojson)
 
             const bounds = envelope(geojson).geometry.coordinates[0].slice(0, 4).map(coor => coor.reverse());
 

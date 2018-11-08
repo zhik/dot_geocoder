@@ -24,7 +24,7 @@ export default function flattenFields(obj){
             }
 
             if(keyArray[0] && name){
-                //add new key with the name of the unqiue field
+                //add new key with the name of the unqiue field 
                 commonFlat[`${keyArray[0]}.Name`] = concatUnqiue(commonFlat[`${keyArray[0]}.Name`], name);
             }
 
@@ -64,6 +64,8 @@ function concatUnqiue(field, value){
     if(field){
         if(!field.includes(value)){
             return `${field}, ${value}`;
+        }else{
+            return field;
         }
     }
     return value;

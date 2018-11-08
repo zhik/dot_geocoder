@@ -89,7 +89,6 @@ class BlockTableResult extends Component {
             "features": []
         });
 
-        console.log(geojson)
         exportShapefileDirectly(this.props.fileName, geojson , epsg);
     }
 
