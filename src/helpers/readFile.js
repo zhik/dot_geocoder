@@ -7,10 +7,15 @@ const readFile = file => {
         const reader = new FileReader();
         /* Check file extension */
         const extension = file.name.split('.').pop().toLowerCase();
-        if(supportedExtension.indexOf(extension) === -1) reject('file type not supported');
+        if(!supportedExtension.includes(extension)){
+            reject('file type not supported');
+        }
         const rABS = !!reader.readAsBinaryString;
         reader.onload = e => {
-            /* Parse data */
+            if(!supportedExtension.includes(extension)){
+                reject('file type not supported');
+            }else{
+                 /* Parse data */
             const bstr = e.target.result;
             const wb = XLSX.read(bstr, {type:rABS ? 'binary' : 'array'});
             /* Get first worksheet */
@@ -22,6 +27,8 @@ const readFile = file => {
             const cleanData = data.filter(array => array.length > 0);
             /* Update state */
             resolve(cleanData);
+
+            }
         };
         if(rABS) reader.readAsBinaryString(file); else reader.readAsArrayBuffer(file);
         
