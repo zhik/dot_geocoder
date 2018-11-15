@@ -4,7 +4,7 @@ import Navbar from './Navbar';
 import '../css/App.css';
 import 'semantic-ui-css/semantic.min.css';
 
-import readFile from '../helpers/readFile';
+import readFile, {readSheetNames} from '../helpers/readFile';
 import queryGeocoder from '../helpers/queryGeocoder';
 import {saveToLocalStorage, loadFromLocalStorage} from '../helpers/localStorage';
 import fieldHelper from '../helpers/fieldHelper';
@@ -21,6 +21,7 @@ import BlockEditor from './editor/BlockEditor';
 
 class BlockApp extends Component{
     state = {
+        file: null,
         header: [],
         body: [],
         results: [],
@@ -31,6 +32,8 @@ class BlockApp extends Component{
           errorsCount: 0,
           finshed: false,
         },
+        tabOptions: [],
+        tabValue: 0,
         fileName : '',
         fileError: false,
         exportColumns: {},
@@ -54,10 +57,90 @@ class BlockApp extends Component{
       }
   
 
-    _onFileChange = e => {
+      _onFileChange = e => {
         const file = e.target.files[0];
+
+        readSheetNames(file).then(sheetNames => {
+            //update sheetnames
+          this.setState({
+            file,
+            tabValue: 0,
+            tabOptions: sheetNames.map((sheetName, i) => {
+              return {
+                key: i,
+                text: sheetName,
+                value: i
+              };
+            })
+          })
+        }).then( i => {
+          readFile(file)
+          .then(sheet => {
+            const fileName = file.name.split('.')[0];
+            const header = sheet[0];
+            const body = sheet.slice(1);
+            const status = this.state.status;
+            status.count = body.length;
+  
+            //reset
+            this.setState({ 
+              file,
+              fileError: false,
+              fileName,
+              body,
+              header,
+              results: [],
+              errors: [],
+              status
+            });
+  
+          })
+          .catch(err => {
+            console.error(err);
+            this.setState({ 
+              file: null,
+              fileError: true,
+              tabOptions: [],
+              tabValue: 0,
+              body: [],
+              header: [] 
+            });
+          })
+        }).catch(err => {
+            console.error(err);
+            this.setState({ 
+              file: null,
+              fileError: true,
+              tabOptions: [],
+              tabValue: 0,
+              body: [],
+              header: [] 
+            });
+          })
+    }
+
+    _onTabChange= (e, { value }) => {
+      this.setState({
+        tabValue: value
+      });
+
+
+      const file = this.state.file;
+      if(file){
         const fileName = file.name.split('.')[0];
-        readFile(file)
+        readSheetNames(file).then(sheetNames => {
+          this.setState({
+            tabOptions: sheetNames.map((sheetName, i) => {
+              return {
+                key: i,
+                text: sheetName,
+                value: i
+              };
+            })
+          })
+        });
+
+        readFile(file, value)
         .then(sheet => {
           const header = sheet[0];
           const body = sheet.slice(1);
@@ -66,6 +149,7 @@ class BlockApp extends Component{
 
           //reset
           this.setState({ 
+            file,
             fileError: false,
             fileName,
             body,
@@ -84,8 +168,8 @@ class BlockApp extends Component{
             header: [] 
           });
         })
+      }
     }
-
     queryApi = (fields, type) => {
         //reset status and start
         const status = this.state.status;
@@ -284,11 +368,16 @@ class BlockApp extends Component{
     render(){
         return(
             <React.Fragment>
-                <Navbar/>
+                <Navbar 
+                    location={this.props.location.pathname}
+                />
 
                 <FileUpload 
                     _onFileChange={this._onFileChange} 
                     fileError={this.state.fileError}
+                    tabOptions={this.state.tabOptions}
+                    tabValue={this.state.tabValue}
+                    _onTabChange={this._onTabChange}
                 />
 
                 <TablePreview 

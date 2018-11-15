@@ -17,8 +17,8 @@ class ColumnsPicker extends Component {
         const rcolumns = flattenFields(sample)
         const frcolumns = Object.keys(rcolumns).filter(i => typeof(rcolumns[i]) !== 'object');
             
-        const columns = [...this.props.header, ...frcolumns].map( i => (
-                <Checkbox key={`hp-${i}`} label={i} onChange={() => this._toggle(i)} checked={this.props.exportColumns[i]}/>
+        const columns = [...this.props.header, ...frcolumns].map( (i, n) => (
+                <Checkbox key={`hp-${n}`} label={i} onChange={() => this._toggle(i)} checked={this.props.exportColumns[i]}/>
         ));
 
         return (

@@ -2,8 +2,8 @@ import React from 'react';
 import { List, Label, Header, Segment } from 'semantic-ui-react'
 
 const versions = {
-    'Upcoming' : ['excel tab support'],
-    'release v1.1' : ['extended Block Stretch functions','fixing errors now saves'],
+    'Upcoming' : ['more custom error handling'],
+    'release v1.1' : ['extended Block Stretch functions','fixing errors now saves','excel tab support'],
     'release v1.0 (10/11/18)' : ['bug fixes'],
     'alpha v0.3 working editor! (5/3/18)': ['a working editor', 'handling compass direction errors', 'handling for field errors'],
     'alpha v0.2 somewhat stable (4/16/18)' : ['localstorage for results, in case of crash','added nav, about','added maps (preview of results)','helpers for Boroughs added, so now numbers, single and two digit letters can be used (e.g. 2, X, BX for Bronx)','filter for errors toggle for results'],
