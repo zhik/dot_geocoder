@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Popup,Label } from 'semantic-ui-react'
 import { NavLink } from 'react-router-dom'
 
-const Export = ({ exportColumns, _downloadExcel, _downloadShape, children, type}) => {
+const Export = ({ exportColumns, _downloadExcel, _downloadShape, children, type, history}) => {
     //filter for only true exportColumns
     const exportColumnsTrue = Object.keys(exportColumns).filter(i => exportColumns[i]);
 
@@ -26,12 +26,16 @@ const Export = ({ exportColumns, _downloadExcel, _downloadShape, children, type}
         />
     )
 
-    const mapButton = () => {
+    const mapButton = (type) => {
         switch(type){
             case 'block':
-                return <Button icon="map" size='tiny' content={<NavLink to="/blockmap">View on Map</NavLink>}/>;
+                return <Button icon="map" size='tiny' onClick={()=> history.push('/blockmap')} content={<NavLink to="/blockmap">View on Map</NavLink>}/>;
+            case 'blockmap':
+                return <Button icon="arrow left" size='tiny' onClick={()=> history.push('/block')} content={<NavLink to="/block">Go back</NavLink>}/>;
+            case 'map':
+                return <Button icon="arrow left" size='tiny' onClick={()=> history.push('/')} content={<NavLink to="/">Go back</NavLink>}/>;
             default:
-                return <Button icon="map" size='tiny' content={<NavLink to="/map">View on Map</NavLink>}/>;
+                return <Button icon="map" size='tiny' onClick={()=> history.push('/map')} content={<NavLink to="/map">View on Map</NavLink>}/>;
         }
     }
     return (
@@ -55,7 +59,7 @@ const Export = ({ exportColumns, _downloadExcel, _downloadShape, children, type}
                     Exports to WGS 84 - Used by most web maps
                 </Popup.Content>    
             </Popup>
-            {mapButton()}
+            {mapButton(type)}
             {children}
         </div>
     )

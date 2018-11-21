@@ -162,7 +162,7 @@ class BlockTableResult extends Component {
 
         return(
             <React.Fragment>
-                <Export type={'block'} _downloadExcel={this._downloadExcel} _downloadShape={this._downloadShape} exportColumns={this.props.exportColumns}>
+                <Export history={this.props.history} type={this.props.type || 'block'} _downloadExcel={this._downloadExcel} _downloadShape={this._downloadShape} exportColumns={this.props.exportColumns}>
                     <Checkbox toggle label="Filter Errors" checked={this.state.filterError} onChange={() => this.setState({filterError : !this.state.filterError})}/>
                     
                 </Export>

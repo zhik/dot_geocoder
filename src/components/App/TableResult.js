@@ -128,7 +128,7 @@ class TableResult extends Component {
 
         return(
             <React.Fragment>
-                <Export _downloadExcel={this._downloadExcel} _downloadShape={this._downloadShape} exportColumns={this.props.exportColumns}>
+                <Export type={this.props.type || null} history={this.props.history} _downloadExcel={this._downloadExcel} _downloadShape={this._downloadShape} exportColumns={this.props.exportColumns}>
                     <Checkbox toggle label="Filter Errors" checked={this.state.filterError} onChange={() => this.setState({filterError : !this.state.filterError})}/>
                 </Export>
                 <div className='table-preview'>

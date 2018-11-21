@@ -98,6 +98,7 @@ class DefaultFix extends Component {
                         </ol>
                 </Message>
                 <Header as='h4'>Preview Table</Header>
+                <div className="editor-table">
                 <Table compact celled>
                     <Table.Header>
                         <Table.Row>
@@ -114,6 +115,7 @@ class DefaultFix extends Component {
                         </Table.Row>
                     </Table.Body>
                 </Table>
+                </div>
                 <Divider />
                 <Header as='h4'>Editor</Header>
                 <Form>

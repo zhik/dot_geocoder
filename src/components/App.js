@@ -311,6 +311,7 @@ class App extends Component {
           exportColumns={this.state.exportColumns}
           _handleEditorOpen={this._handleEditorOpen}
           fileName={this.state.fileName}
+          history={this.props.history}
         />
 
         <Editor 

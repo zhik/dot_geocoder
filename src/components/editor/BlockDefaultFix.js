@@ -218,22 +218,24 @@ class BlockDefaultFix extends Component {
                         </ol>
                 </Message>
                 <Header as='h4'>Preview Table</Header>
-                <Table compact celled>
-                    <Table.Header>
-                        <Table.Row>
-                            {this.props.header.map((head,i) => (
-                                <Table.HeaderCell key={`editor-table-head-${i}`}>{head}</Table.HeaderCell>
-                            ))}
-                        </Table.Row>
-                    </Table.Header>
-                    <Table.Body>
-                        <Table.Row>
-                            {this.props.body[this.props.rowIndex].map((body,i)=> (
-                                <Table.Cell key={`editor-table-body-${i}`}>{body}</Table.Cell>
-                            ))}
-                        </Table.Row>
-                    </Table.Body>
-                </Table>
+                <div className="editor-table">
+                    <Table compact celled>
+                        <Table.Header>
+                            <Table.Row>
+                                {this.props.header.map((head,i) => (
+                                    <Table.HeaderCell key={`editor-table-head-${i}`}>{head}</Table.HeaderCell>
+                                ))}
+                            </Table.Row>
+                        </Table.Header>
+                        <Table.Body>
+                            <Table.Row>
+                                {this.props.body[this.props.rowIndex].map((body,i)=> (
+                                    <Table.Cell key={`editor-table-body-${i}`}>{body}</Table.Cell>
+                                ))}
+                            </Table.Row>
+                        </Table.Body>
+                    </Table>
+                </div>
                 <Divider />
                 <Header as='h4'>Editor</Header>
                 <Form>

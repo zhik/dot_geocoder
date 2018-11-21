@@ -5,6 +5,15 @@
     transform: translate(0%, 2%);
 }
 
+.editor-table{
+    overflow-y: auto;
+}
+
+.editor-table table{
+    width: 80%;
+    height: 100%;
+}
+
 .ui.page.modals.transition.visible {
     display: flex !important;
 }

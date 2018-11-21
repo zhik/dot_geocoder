@@ -129,6 +129,8 @@ class MapPreview extends Component {
                         results={this.state.results}
                         exportColumns={this.state.exportColumns}
                         zoomToLocation={this.zoomToLocation}
+                        history={this.props.history}
+                        type={'map'}
                     />
                 </div>
 
