@@ -16,7 +16,7 @@ export default function flattenFields(obj){
     //modify some fields so they common aren't unqiue
     const commonFlat = Object.keys(safeFlat).reduce((commonFlat,key) => {
         const keyArray = key.split('.')
-        if(['CrossStreetOne','CrossStreetTwo','IntersectingStreets'].some(unqiueKey => !keyArray.includes('debug') && keyArray.includes(unqiueKey))){
+        if(['CrossStreetOne','CrossStreetTwo','IntersectingStreets','Street'].some(unqiueKey => !keyArray.includes('debug') && keyArray.includes(unqiueKey))){
             //remove the unqiue item from array, usally the 2nd item
             const name = keyArray.splice(1,1)[0];
             if(safeFlat[key]){
