@@ -2,7 +2,9 @@
 import React, { Component } from 'react';
 import Navbar from './Navbar';
 import ChangeLog from './About/ChangeLog';
-import { Icon, Message } from 'semantic-ui-react';
+import { Icon, Message , Button } from 'semantic-ui-react';
+
+import { checkLocalStorage, removeLocalStorage } from '../helpers/localStorage';
 
 class About extends Component {
     render(){
@@ -31,6 +33,14 @@ class About extends Component {
                     <Message info>
                     Contact <a href="mailto:zhe@dot.nyc.gov?subject=Web Batch Geocoder">zhe@dot.nyc.gov</a> , if there are any issues, questions or suggestions. 
                     </Message>
+
+                    <Button
+                        color='red'
+                        content='Erase local storage (in case of issues)'
+                        icon='erase'
+                        onClick={() => removeLocalStorage('app') && removeLocalStorage('block-app') && window.location.reload()}
+                        disabled={!checkLocalStorage('app') && !checkLocalStorage('block-app')}
+                    />
 
                     <h3>test files (ignore)</h3>
 

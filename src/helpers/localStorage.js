@@ -498,3 +498,12 @@ export function loadFromLocalStorage(key){
     const string = LZString.decompress(localStorage.getItem(key));
     return string ? JSON.parse(string) : null;
 }
+
+export function checkLocalStorage(key){
+  return localStorage.getItem(key) || null; 
+}
+
+export function removeLocalStorage(key){
+  localStorage.removeItem(key);
+  return true;
+}

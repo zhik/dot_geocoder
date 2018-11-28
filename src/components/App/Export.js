@@ -22,7 +22,12 @@ const Export = ({ exportColumns, _downloadExcel, _downloadShape, children, type,
             content='Shapefile WGS84(4326)'
             icon='world'
             onClick={() => _downloadShape(4326)}
-            disabled={!type && (!(exportColumnsTrue.indexOf("Longitude") > -1 && exportColumnsTrue.indexOf("Latitude") > -1))}
+            disabled={
+                //disable button for non block call ('app' and 'map' views)
+                (type ? type.includes('block') : false) 
+                ? false 
+                : (!(exportColumnsTrue.indexOf("Longitude") > -1 && exportColumnsTrue.indexOf("Latitude") > -1))
+            }
         />
     )
 
