@@ -10,7 +10,7 @@ export function blockReduce(results, type) {
     return new Promise(async (resolve, reject) => {
 
         //modify results depend on if it contains the list or error.
-        const agg = []
+        const agg = [];
         for (const result of results) {
             //check for BlockFaceList, append to list
             if (result.hasOwnProperty('BlockFaceList')) {
@@ -94,6 +94,7 @@ export function blockReduce(results, type) {
                     
                     item.rowIndex = result.rowIndex;
                     item.listIndex = i;
+                    item.debug = result.debug;
                     item.error = item.GeoSupportError ? item.GeoSupportError : ''; 
                     agg.push(item);
 
@@ -127,6 +128,7 @@ export function blockReduce(results, type) {
 
                     item.rowIndex = result.rowIndex;
                     item.listIndex = i;
+                    item.debug = result.debug;
                     item.error = item.GeoSupportError ? item.GeoSupportError : '';
                     agg.push(item);
                 });

@@ -16,6 +16,7 @@ import FORMBLOCKOPTIONS from './form/blockOptions';
 import Form from './form/Form';
 import ColumnsPicker from './App/ColumnsPicker';
 import BlockTableResult from './App/BlockTableResult';
+import AppInfo from './App/AppInfo';
 
 import BlockEditor from './editor/BlockEditor';
 
@@ -333,12 +334,17 @@ class BlockApp extends Component{
             
             //find and remove error item
             const errorIndex = results.findIndex(result => result.rowIndex === rowIndex);
-
+            
             if(errorIndex > -1) results.splice(errorIndex, 1);
 
+            //add include debug object in newRows
+            const newRows = data.data.map(d => {
+                d.debug = data.debug;
+                return d;
+            });
 
             //concat items and sort 
-            const mod_results = results.concat(data.data).sort((a, b) => {
+            const mod_results = results.concat(newRows).sort((a, b) => {
                 if (a.rowIndex > b.rowIndex) {
                     return 1;
                 } else if (a.rowIndex < b.rowIndex) {
@@ -371,6 +377,8 @@ class BlockApp extends Component{
                 <Navbar 
                     location={this.props.location.pathname}
                 />
+
+                <AppInfo />
 
                 <FileUpload 
                     _onFileChange={this._onFileChange} 
