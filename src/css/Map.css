@@ -17,14 +17,17 @@
 .panel{
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
 }
 
 .left-panel{
-    width: 35%;
+    min-width: 28em;
+    min-height: 30em;
+    flex-grow: 1;
 }
 
 .right-panel{
     width: 65%;
-    height: calc(100vh - 100px);
     overflow-y: auto;
+    flex-grow: 1;
 }
