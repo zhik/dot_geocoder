@@ -35,7 +35,8 @@ class BlockTableResult extends Component {
         exportExcel(this.props.fileName, [exportColumnsTrue, ...resultsBody]);
     }
 
-    _downloadShape = (_epsg) => {
+    _downloadShape = (event, _epsg) => {
+        event.preventDefault();
         const epsg = parseInt(_epsg, 10);
         const {header,body, exportColumns, results} = this.props;
         //filter for only true exportColumns

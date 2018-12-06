@@ -3,6 +3,7 @@ import XLSX from 'xlsx';
 const supportedExtension = ['csv','tsv','txt','xls','xlsx'];
 
 export function readSheetNames(file){
+    //get tab/sheet names of excel file 
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         /* Check file extension */
@@ -26,6 +27,8 @@ export function readSheetNames(file){
 
 
 const readFile = (file, sheetNumber = 0) => {
+    //promise that gets the data for the spreadsheet and returns it in json format
+    //if the file isn't supported or it can't read rejects the file
     return new Promise((resolve, reject) => {
         const reader = new FileReader();
         /* Check file extension */

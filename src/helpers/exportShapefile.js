@@ -21,7 +21,7 @@ export const exportShapefileDirectly = (fileName, geojson, epsg) => {
 
 
 /**
- * converts from header, body format to geojson and exports 
+ * converts from header and body array format to geojson and exports 
  * 
  * @param {*} fileName 
  * @param {*} header 

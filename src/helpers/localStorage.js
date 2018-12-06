@@ -488,22 +488,26 @@ var LZString = (function() {
       return LZString;
     })();
 
-export function saveToLocalStorage(key, object){
-    const string = LZString.compress(JSON.stringify(object));
-    localStorage.setItem(key, string);
-    return key;
+export function saveToLocalStorage(key, object) {
+  //saves object into localstorage, LZString is used to compress the data so it can be stored
+  const string = LZString.compress(JSON.stringify(object));
+  localStorage.setItem(key, string);
+  return key;
 }
 
-export function loadFromLocalStorage(key){
-    const string = LZString.decompress(localStorage.getItem(key));
-    return string ? JSON.parse(string) : null;
+export function loadFromLocalStorage(key) {
+  //decompress data and returns an object saved previously 
+  const string = LZString.decompress(localStorage.getItem(key));
+  return string ? JSON.parse(string) : null;
 }
 
-export function checkLocalStorage(key){
-  return localStorage.getItem(key) || null; 
+export function checkLocalStorage(key) {
+  //checks if key exist in storage
+  return localStorage.getItem(key) || null;
 }
 
-export function removeLocalStorage(key){
+export function removeLocalStorage(key) {
+  //clears storage using key
   localStorage.removeItem(key);
   return true;
 }

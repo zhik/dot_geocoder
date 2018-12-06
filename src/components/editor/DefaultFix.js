@@ -84,7 +84,7 @@ class DefaultFix extends Component {
                 return null
             }
         }
-
+        
         return(
             <div>
                 <Message info>

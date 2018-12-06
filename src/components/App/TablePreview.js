@@ -4,7 +4,7 @@ import { Table } from 'semantic-ui-react'
 const TablePreview = ({header, body}) => {
     if(!header.length && !body.length) return null;
     
-    //preview first few
+    //preview first few entries, so it isn't loading two full tables
 
     //default to 5 but if length is less than length
     let preview = 5;

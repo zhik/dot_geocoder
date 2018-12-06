@@ -11,7 +11,7 @@ const Export = ({ exportColumns, _downloadExcel, _downloadShape, children, type,
             color='facebook'
             content='Shapefile NAD83(2263)'
             icon='world'
-            onClick={() => _downloadShape(2263)}
+            onClick={(event) => _downloadShape(event, 2263)}
             disabled={!type && (!(exportColumnsTrue.indexOf("XCoordinate") > -1 && exportColumnsTrue.indexOf("YCoordinate") > -1))}
         />
     )
@@ -21,7 +21,7 @@ const Export = ({ exportColumns, _downloadExcel, _downloadShape, children, type,
             color='blue'
             content='Shapefile WGS84(4326)'
             icon='world'
-            onClick={() => _downloadShape(4326)}
+            onClick={(event) => _downloadShape(event, 4326)}
             disabled={
                 //disable button for non block call ('app' and 'map' views)
                 (type ? type.includes('block') : false) 

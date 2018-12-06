@@ -16,7 +16,7 @@ const AppInfo = ()=> {
                     <li>If you get redirected to a blank page, when you click download your export is too big. Try to reduce the fields or geocode in parts.</li>
                 </ul>
                 <h3>Video Guide:
-                    <Popup 
+                    <Popup
                         position='bottom center' 
                         trigger={<Icon name='question circle outline' />}
                         content={<img height="500px" src={example} alt="example of instructions"/>}

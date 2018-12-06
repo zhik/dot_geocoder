@@ -31,11 +31,14 @@ const BOROUGH_DICT = {
 
 
 const fieldHelper = (cell, field) => {
+    //replaces user input with corrected input for field
     switch(field){
         case 'Borough':
+            //any value in Borough will be converted to correct Borough for API
             const cCell = String(cell).toLowerCase().trim();
             return cCell in BOROUGH_DICT ? BOROUGH_DICT[cCell] : cell;
         case 'CompassDirection':
+            // n --> N , north --> NORTH so it works with the API
             return String(cell).toUpperCase().trim();
         default:
             return String(cell).trim();

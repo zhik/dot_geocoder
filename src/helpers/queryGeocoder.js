@@ -1,4 +1,5 @@
 const generateURL = (type, params) => {
+    //gernerate the url for LocationServiceAPI using type and parameters 
     const requestParams = Object.keys(params).reduce((requestParams, param) => {
         return requestParams += `${param}=${params[param]}&`
     },'')
@@ -8,6 +9,7 @@ const generateURL = (type, params) => {
 
 
 const queryGeocoder = (type, params) => {
+    //return a Promise that will catch if there are any geosupport errors, otherwise return the json
     return new Promise((resolve, reject) => {
         return fetch(generateURL(type,params))
                 .then(res => res.json())

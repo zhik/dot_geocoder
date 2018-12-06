@@ -15,6 +15,7 @@ class TableResult extends Component {
     _downloadExcel = event => {
         event.preventDefault();
         const {header,body,results,exportColumns} = this.props;
+        //construct data from the exportColumns the user checked
         //filter for only true exportColumns
         const exportColumnsTrue = Object.keys(exportColumns).filter(i => exportColumns[i]) 
 
@@ -35,9 +36,10 @@ class TableResult extends Component {
         exportExcel(this.props.fileName, [exportColumnsTrue, ...resultsBody]);
     }
 
-    _downloadShape = (epsg) => {
+    _downloadShape = (event, epsg) => {
+        event.preventDefault();
         const {header,body,results,exportColumns} = this.props;
-
+        //construct data from the exportColumns the user checked
         //filter for only true exportColumns
         const exportColumnsTrue = Object.keys(exportColumns).filter(i => exportColumns[i]) 
 
@@ -63,7 +65,7 @@ class TableResult extends Component {
         const {header,body,results,exportColumns} = this.props;
         if(!results.length) return null;
 
-
+        //construct data from the exportColumns the user checked
         //filter for only true exportColumns
         const exportColumnsTrue = Object.keys(exportColumns).filter(i => exportColumns[i]) 
 

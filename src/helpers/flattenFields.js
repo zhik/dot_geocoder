@@ -7,6 +7,8 @@ import { flatten } from 'flat';
  * parent[child] -> parent.child 
  * 1 nested arrays : [1 , 2 , 3] -> "1,2,3"
  * 
+ * use for the debug, and nested items like onstreet/ crossstreet details
+ * 
  * @param {*} obj 
  */
 export default function flattenFields(obj){
@@ -60,7 +62,7 @@ export default function flattenFields(obj){
 }
 
 function concatUnqiue(field, value){
-    //return value, if unqiue append to value.
+    //return value if field blank, otherwise return field, if unqiue append value. (may not include some edge cases)
     if(field){
         if(!field.includes(value)){
             return `${field}, ${value}`;
