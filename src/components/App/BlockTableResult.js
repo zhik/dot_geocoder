@@ -119,7 +119,7 @@ class BlockTableResult extends Component {
 
         const onRowClick = (row,i) => {
             if(this.props._handleEditorOpen){
-                if(results[i].error && results[i].error !== 'STREET COMBINATION NOT UNIQUE') return this.props._handleEditorOpen(results[i].debug, results[i].error, results[i].rowIndex);     
+                if(results[i].error && !['STREET COMBINATION NOT UNIQUE','ACCESS BY NODE FAILED - NODE NOT FOUND'].includes(results[i].error )) return this.props._handleEditorOpen(results[i].debug, results[i].error, results[i].rowIndex);     
             }else if(this.props.zoomToLocation){
                 if(results[i].error) return this.props.zoomToLocation();
                 
@@ -132,7 +132,7 @@ class BlockTableResult extends Component {
         const tableBody = resultsBody.map((row,i)=> {
             //case to filter for ONLY errors
             if(this.state.filterError){
-                if(results[i].error && results[i].error !== 'STREET COMBINATION NOT UNIQUE'){
+                if(results[i].error && !['STREET COMBINATION NOT UNIQUE','ACCESS BY NODE FAILED - NODE NOT FOUND'].includes(results[i].error )){
                     return(
                         <Table.Row 
                             key={`pbody-${i}`} 
