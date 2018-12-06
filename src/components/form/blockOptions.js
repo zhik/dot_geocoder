@@ -1,6 +1,6 @@
 const FORMBLOCKOPTIONS = {
     extendedStretch_blockface: {
-        name: 'Extended Stretch (blockface)',
+        name: 'Extended Stretch (blockface)/lines',
         fields: [
             {
                 name: 'OnStreet',
@@ -36,7 +36,7 @@ const FORMBLOCKOPTIONS = {
         description: 'street segs for stretch'
     },
     extendedStretch_intersection: {
-        name: 'Extended Stretch (intersection)',
+        name: 'Extended Stretch (intersection)/points',
         fields: [
             {
                 name: 'OnStreet',

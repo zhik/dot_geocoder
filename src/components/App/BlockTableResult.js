@@ -119,7 +119,7 @@ class BlockTableResult extends Component {
 
         const onRowClick = (row,i) => {
             if(this.props._handleEditorOpen){
-                if(results[i].error && !['STREET COMBINATION NOT UNIQUE','ACCESS BY NODE FAILED - NODE NOT FOUND'].includes(results[i].error )) return this.props._handleEditorOpen(results[i].debug, results[i].error, results[i].rowIndex);     
+                if(results[i].error && !['STREET COMBINATION NOT UNIQUE','ACCESS BY NODE FAILED - NODE NOT FOUND','INPUT DOES NOT DEFINE A STREET SEGMENT'].includes(results[i].error )) return this.props._handleEditorOpen(results[i].debug, results[i].error, results[i].rowIndex);     
             }else if(this.props.zoomToLocation){
                 if(results[i].error) return this.props.zoomToLocation();
                 
@@ -130,14 +130,17 @@ class BlockTableResult extends Component {
         }
 
         const tableBody = resultsBody.map((row,i)=> {
+            //errors that are not an individual errors
+            const realError = results[i].error && !['STREET COMBINATION NOT UNIQUE','ACCESS BY NODE FAILED - NODE NOT FOUND','INPUT DOES NOT DEFINE A STREET SEGMENT'].includes(results[i].error);
+
             //case to filter for ONLY errors
             if(this.state.filterError){
-                if(results[i].error && !['STREET COMBINATION NOT UNIQUE','ACCESS BY NODE FAILED - NODE NOT FOUND'].includes(results[i].error )){
+                if(realError){
                     return(
                         <Table.Row 
                             key={`pbody-${i}`} 
-                            negative={Boolean(results[i].error)}
-                            onClick={() => onRowClick(row, i)}
+                            negative={realError}
+                            onClick={() => realError && onRowClick(row, i)}
                         >
                             <Table.Cell key={`pbody-${i}-i`}>{i+1}</Table.Cell>
                             {row.map((cell,i2) => <Table.Cell key={`pbody-${i}-${i2}`}>{cell}</Table.Cell>)}
@@ -150,8 +153,8 @@ class BlockTableResult extends Component {
                 return(
                     <Table.Row 
                         key={`pbody-${i}`} 
-                        negative={Boolean(results[i].error)}
-                        onClick={() => onRowClick(row, i)}
+                        negative={realError}
+                        onClick={() => realError && onRowClick(row, i)}
                     >
                         <Table.Cell key={`pbody-${i}-i`}>{i+1}</Table.Cell>
                         {row.map((cell,i2) => <Table.Cell key={`pbody-${i}-${i2}`}>{cell}</Table.Cell>)}
