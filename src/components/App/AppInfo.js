@@ -12,8 +12,8 @@ const AppInfo = ()=> {
                     <li>Remove or Include certain fields in Export Columns (3)</li>
                     <li>Click on rows with errors to correct for errors using the editor tool</li>
                     <li>To preview the data click on "View on Map" located at the Download section</li>
-                    <li>Don't geocode files larger than 1000 entries (for Block function try to keep entries under 100), it will cause lag or crashes</li>
-                    <li>If you get redirected to a blank page, when you click download your export is too big. Try to reduce the fields or geocode in parts.</li>
+                    <li>Don't geocode files larger than 1000 entries (for the Block function try to keep entries under 100), it will cause lag or crashes</li>
+                    <li>If you get redirected to a blank page, when you download a shapefile, your export is too big. Try to reduce the fields or geocode in parts.</li>
                 </ul>
                 <h3>Video Guide:
                     <Popup

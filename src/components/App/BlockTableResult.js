@@ -129,9 +129,10 @@ class BlockTableResult extends Component {
             }
         }
 
+
         const tableBody = resultsBody.map((row,i)=> {
             //errors that are not an individual errors
-            const realError = results[i].error && !['STREET COMBINATION NOT UNIQUE','ACCESS BY NODE FAILED - NODE NOT FOUND','INPUT DOES NOT DEFINE A STREET SEGMENT'].includes(results[i].error);
+            const realError = Boolean(results[i].error && !['STREET COMBINATION NOT UNIQUE','ACCESS BY NODE FAILED - NODE NOT FOUND','INPUT DOES NOT DEFINE A STREET SEGMENT'].includes(results[i].error));
 
             //case to filter for ONLY errors
             if(this.state.filterError){

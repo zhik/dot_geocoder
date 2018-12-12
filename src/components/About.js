@@ -45,7 +45,7 @@ class About extends Component {
                     <h3>test files (ignore)</h3>
 
                     <ul>
-                        {['geocode_test.csv','geocode_test2.csv','LPI.xlsx','block_test.xlsx'].map((file,i) => <li key={`filelink-${i}`}><a target='_blank' href={`${window.location.pathname}${file}`}>{file}</a></li>)}
+                        {['BPP.xlsx','LPI.xlsx','block_test.xlsx','Sept18update.csv'].map((file,i) => <li key={`filelink-${i}`}><a target='_blank' href={`${window.location.pathname}${file}`}>{file}</a></li>)}
                     </ul>
 
                 </div>
