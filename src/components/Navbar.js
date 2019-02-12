@@ -10,7 +10,7 @@ const Navbar = ({location}) => {
             <img className='logo' src={logo} alt='dot-logo'/> 
             web batch geocoder 
             <Label color='green'>
-            v 1.1
+            v 1.1b
             </Label>
             <div className='nav-links'>
                 <Menu pointing size='tiny' color='teal'>

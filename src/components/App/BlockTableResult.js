@@ -5,6 +5,7 @@ import flattenFields from '../../helpers/flattenFields';
 import exportExcel from '../../helpers/exportExcel';
 import {exportShapefileDirectly} from '../../helpers/exportShapefile';
 import Export from './Export';
+import ExportMessage from './ExportMessage';
 
 class BlockTableResult extends Component {
 
@@ -51,38 +52,38 @@ class BlockTableResult extends Component {
                 "type": "Feature",
                 "properties": {}
             };
-            if(feature.geojson && feature.geojson[epsg]){
+            if(feature.geojson && feature.geojson[epsg] && feature.geojson[epsg].properties && !feature.geojson[epsg].properties.dummy){
                 newFeature.geometry = feature.geojson[epsg].geometry;
-            }else{
-                //dummy geometry 
-                const type = {
-                    'Blockface' : "MultiLineString",
-                    'Intersection' : 'Point'
-                }
-                newFeature.geometry = {
-                    "type": type[feature.debug.query.ExtendedStretchType],
-                    "coordinates" : [
-                        [[undefined,undefined],[undefined,undefined]]
-                    ]
-                }
+            // }else{
+            //     //dummy geometry 
+            //     const type = {
+            //         'Blockface' : "MultiLineString",
+            //         'Intersection' : 'Point'
+            //     }
+            //     newFeature.geometry = {
+            //         "type": type[feature.debug.query.ExtendedStretchType],
+            //         "coordinates" : [
+            //             [[undefined,undefined],[undefined,undefined]]
+            //         ]
+            //     }
+            // }
+
+                //fix headers https://support.esri.com/en/technical-article/000005588
+                //first remove _ underscores in the beginning
+                //next replace illegal characters with _ underscores 
+
+
+                //copy properties from body of org. excel
+                bodyColumnsIndex.forEach((bodyIndex,i) => newFeature.properties[bodyColumns[i].replace(/[^a-z0-9_]+/gi,'_').replace(/^_+/gi,'')] = body[feature.rowIndex][bodyIndex]);
+
+                //copy properties from results
+                const properties_flatten = flattenFields(feature);
+
+
+                resultColumns.forEach(column => newFeature.properties[column.replace(/[^a-z0-9_]+/gi,'_').replace(/^_+/gi,'')] = properties_flatten[column]);
+
+                geojson.features.push(newFeature);
             }
-
-
-            //fix headers https://support.esri.com/en/technical-article/000005588
-            //first remove _ underscores in the beginning
-            //next replace illegal characters with _ underscores 
-
-
-            //copy properties from body of org. excel
-            bodyColumnsIndex.forEach((bodyIndex,i) => newFeature.properties[bodyColumns[i].replace(/[^a-z0-9_]+/gi,'_').replace(/^_+/gi,'')] = body[feature.rowIndex][bodyIndex]);
-
-            //copy properties from results
-            const properties_flatten = flattenFields(feature);
-
-
-            resultColumns.forEach(column => newFeature.properties[column.replace(/[^a-z0-9_]+/gi,'_').replace(/^_+/gi,'')] = properties_flatten[column]);
-
-            geojson.features.push(newFeature);
 
             return geojson;
         }, {
@@ -129,10 +130,12 @@ class BlockTableResult extends Component {
             }
         }
 
-
         const tableBody = resultsBody.map((row,i)=> {
             //errors that are not an individual errors
             const realError = Boolean(results[i].error && !['STREET COMBINATION NOT UNIQUE','ACCESS BY NODE FAILED - NODE NOT FOUND','INPUT DOES NOT DEFINE A STREET SEGMENT'].includes(results[i].error));
+            
+            //segment level errors
+            const segmentError = Boolean(['STREET COMBINATION NOT UNIQUE','ACCESS BY NODE FAILED - NODE NOT FOUND','INPUT DOES NOT DEFINE A STREET SEGMENT'].includes(results[i].error));
 
             //case to filter for ONLY errors
             if(this.state.filterError){
@@ -154,6 +157,7 @@ class BlockTableResult extends Component {
                 return(
                     <Table.Row 
                         key={`pbody-${i}`} 
+                        warning={segmentError}
                         negative={realError}
                         onClick={() => realError && onRowClick(row, i)}
                     >
@@ -164,6 +168,11 @@ class BlockTableResult extends Component {
             }
         });
 
+        //display message if there are any segment level errors
+        const segmentErrorCount = results.reduce( (errorCount, row )=> {
+            return ['STREET COMBINATION NOT UNIQUE','ACCESS BY NODE FAILED - NODE NOT FOUND','INPUT DOES NOT DEFINE A STREET SEGMENT'].includes(row.error) ? errorCount + 1 : errorCount;
+        }, 0);
+        
 
         return(
             <React.Fragment>
@@ -171,6 +180,9 @@ class BlockTableResult extends Component {
                     <Checkbox toggle label="Filter Errors" checked={this.state.filterError} onChange={() => this.setState({filterError : !this.state.filterError})}/>
                     
                 </Export>
+                <ExportMessage message={{
+                    body: segmentErrorCount ? `Note that some of the streets might be missing segments due to not vaild returns, There are ${segmentErrorCount} possibly missing.` : ''
+                }}/>
                 <div className='table-preview'>
                     <h3>Results</h3>
                     <Table celled striped compact selectable>

@@ -77,6 +77,9 @@ export function blockReduce(results, type) {
                             },
                             2263: {
                                 "type": "Feature",
+                                "properties": {
+                                    "dummy": true
+                                },
                                 "geometry": {
                                     "type": geometryType.hasOwnProperty(type) ? geometryType[type] : null,
                                     "coordinates" : geometryDummy.hasOwnProperty(type) ? geometryDummy[type] : null,
@@ -109,7 +112,8 @@ export function blockReduce(results, type) {
                         4326: {
                             "type": "Feature",
                             "properties": {
-                                LionNodeNumber
+                                LionNodeNumber,
+                                dummy: (!Longitude && !Latitude)
                             },
                             "geometry": {
                                 "type": "Point",
@@ -118,7 +122,9 @@ export function blockReduce(results, type) {
                         },
                         2263: {
                             "type": "Feature",
-                            "properties": {},
+                            "properties": {
+                                dummy: (!XCoordinate && !YCoordinate)
+                            },
                             "geometry": {
                                 "type": "Point",
                                 "coordinates": [XCoordinate ? XCoordinate : undefined, YCoordinate ? YCoordinate : undefined]

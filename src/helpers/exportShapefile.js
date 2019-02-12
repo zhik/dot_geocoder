@@ -59,12 +59,31 @@ export const exportShapefile = (fileName, header, body, epsg) => {
         features: []
     }
 
-    geojson.features = body.map(row => {
-        //bind header and body into object
+    // geojson.features = body.map(row => {
+    //     //bind header and body into object
+    //     const properties = row.reduce( (properties, cell, index) => {
+    //         properties[newHeader[index]] = cell;
+    //         return properties;
+    //     },{})
+
+    //     const feature =  {
+    //         type: 'Feature',
+    //         geometry: {
+    //             type: 'Point',
+    //             coordinates: [parseFloat(properties[x]) || undefined, parseFloat(properties[y]) || undefined]
+    //         },
+    //         properties
+    //     }
+
+    //     return feature;
+    // })
+
+    //only keep features that have value coordinates
+    geojson.features = body.reduce( (features, row) => {
         const properties = row.reduce( (properties, cell, index) => {
             properties[newHeader[index]] = cell;
             return properties;
-        },{})
+        },{});
 
         const feature =  {
             type: 'Feature',
@@ -75,8 +94,12 @@ export const exportShapefile = (fileName, header, body, epsg) => {
             properties
         }
 
-        return feature;
-    })
+        if(feature.geometry.coordinates[0] && feature.geometry.coordinates[1]){
+            features.push(feature);
+        }
+        
+        return features;
+    }, [])
 
 
     //write to shp.zip

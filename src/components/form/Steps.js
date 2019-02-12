@@ -24,7 +24,7 @@ const Steps = ({currentStep, _changeStep, header, selectedType, confirm}) => {
         },
         { 
             key: 'confirm', 
-            icon: 'send outline', 
+            icon: 'send', 
             active: currentStep === 'confirm',
             title: 'Confirm & Query', 
             link: true,

@@ -47,7 +47,8 @@ const Export = ({ exportColumns, _downloadExcel, _downloadShape, children, type,
         <div className="section">
             <Label as='a' color='olive' ribbon='left'>4</Label>
             <h3>Download</h3>
-            <p>{`NAD83(2263) is used by the DOT,  WGS84(4326) is used by Web Maps(Google, Bing, etc) ${type !== 'block' ? '- to enable WSG84 include Latitude and Longitude in Export Columns': ''}`}</p>
+            <p><b>NOTE: Exporting Shapefile will remove all non-geographic (error, warning) rows.</b></p>
+            <p>{`NAD83(2263) is used by the DOT,  WGS84(4326) is used by Web Maps ${type !== 'block' ? '- to enable WSG84 include Latitude and Longitude in Export Columns': ''}`}</p>
             <Button
                 color='grey'
                 content='CSV/Excel'

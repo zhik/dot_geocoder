@@ -31,7 +31,7 @@ class TableResult extends Component {
             const result = flattenFields(results[rowIndex], { maxDepth: 2, safe: true });
             resultColumns.map(i => result[i] ? newRow.push(result[i]) : newRow.push(''));
 
-            return newRow
+            return newRow;
         })
         exportExcel(this.props.fileName, [exportColumnsTrue, ...resultsBody]);
     }
@@ -55,7 +55,7 @@ class TableResult extends Component {
             const result = flattenFields(results[rowIndex], { maxDepth: 2, safe: true });
             resultColumns.map(i => result[i] ? newRow.push(result[i]) : newRow.push(''));
 
-            return newRow
+            return newRow;
         })
 
         exportShapefile(this.props.fileName, exportColumnsTrue, resultsBody, epsg);
@@ -81,7 +81,7 @@ class TableResult extends Component {
             const result = flattenFields(results[rowIndex], { maxDepth: 2, safe: true });
             resultColumns.map(i => result[i] ? newRow.push(result[i]) : newRow.push(''));
 
-            return newRow
+            return newRow;
         });
 
         const onRowClick = (row,i) => {
