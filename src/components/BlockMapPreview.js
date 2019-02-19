@@ -38,7 +38,7 @@ class MapPreview extends Component {
 
     componentWillMount(){
       //load up backup data, only if it is the same version
-      if(localStorage.getItem("version") === 'v1.1b'){
+      if(localStorage.getItem("version") === 'v1.1c'){
         const res = loadFromLocalStorage('block-app');
         if(res){
           const {header, body, results, exportColumns, fileName} = res;
@@ -47,7 +47,7 @@ class MapPreview extends Component {
           });
         }
       }else{
-        localStorage.setItem('version','v1.1b');
+        localStorage.setItem('version','v1.1c');
       }
     }
 

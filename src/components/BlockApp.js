@@ -44,7 +44,7 @@ class BlockApp extends Component{
 
     componentWillMount(){
         //load up backup data, only if it is the same version
-        if(localStorage.getItem("version") === 'v1.1b'){
+        if(localStorage.getItem("version") === 'v1.1c'){
           const res = loadFromLocalStorage('block-app');
           if(res){
             const {header, body, results, exportColumns, fileName} = res;
@@ -53,7 +53,7 @@ class BlockApp extends Component{
             });
           }
         }else{
-          localStorage.setItem('version','v1.1b');
+          localStorage.setItem('version','v1.1c');
         }
       }
   
@@ -78,7 +78,7 @@ class BlockApp extends Component{
           readFile(file)
           .then(sheet => {
             const fileName = file.name.split('.')[0];
-            const header = sheet[0];
+            const header = sheet[0].map(i => String(i));
             const body = sheet.slice(1);
             const status = this.state.status;
             status.count = body.length;
@@ -143,7 +143,7 @@ class BlockApp extends Component{
 
         readFile(file, value)
         .then(sheet => {
-          const header = sheet[0];
+          const header = sheet[0].map(i => String(i));
           const body = sheet.slice(1);
           const status = this.state.status;
           status.count = body.length;

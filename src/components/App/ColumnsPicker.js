@@ -17,9 +17,18 @@ class ColumnsPicker extends Component {
         const rcolumns = flattenFields(sample)
         const frcolumns = Object.keys(rcolumns).filter(i => typeof(rcolumns[i]) !== 'object');
             
-        const columns = [...this.props.header, ...frcolumns].map( (i, n) => (
-                <Checkbox key={`hp-${n}`} label={i} onChange={() => this._toggle(i)} checked={this.props.exportColumns[i]}/>
-        ));
+        const columns = [...this.props.header, ...frcolumns].map( (i, n) => {
+                if(i.includes('debug.')){
+                    //temp label fix - highlight debug corrections
+                    const debugLabel = i.replace('debug.','Correction: ').replace('query.', '');
+                    return <Checkbox className="label-correction" key={`hp-${n}`} label={debugLabel} onChange={() => this._toggle(i)} checked={this.props.exportColumns[i]}/>
+                }else if(this.props.header.includes(i)){
+                    //highlight original header columns
+                    return <Checkbox className="label-original" key={`hp-${n}`} label={i} onChange={() => this._toggle(i)} checked={this.props.exportColumns[i]}/>
+                }else{
+                    return <Checkbox key={`hp-${n}`} label={i} onChange={() => this._toggle(i)} checked={this.props.exportColumns[i]}/>
+                }
+        });
 
         return (
             <div className="section">

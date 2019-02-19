@@ -40,3 +40,13 @@ body{
 .ui.ribbon.label{
   left: -1rem !important;
 }
+
+.label-correction{
+  background-color: rgba(255, 251, 0, 0.5);
+  font-style: italic !important;
+  font-weight: bold !important;
+}
+
+.label-original{
+  background-color: rgba(200, 200, 200, 0.274);
+}

@@ -129,9 +129,7 @@ class BlockDefaultFix extends Component {
         const results = () => {
             if(this.state.tempEdit){
                 if(!this.state.tempEdit.error){
-
                     //pull out geojson using general function and exclude dummy 
-                    // const geojson = 
                     const geojson = this.state.tempEdit.data.reduce((items, item) => {
                         if(item.geojson[4326] && !item.geojson[4326].properties.dummy && !checkCoordinatesError(item.geojson[4326].geometry.coordinates)){
                             items.features.push(item.geojson[4326]);
@@ -141,7 +139,8 @@ class BlockDefaultFix extends Component {
                         "type": "FeatureCollection",
                         "features": []
                       })
-                    if(!geojson.features){
+
+                    if(!geojson.features.length){
                         return (
                             <React.Fragment>
                                 <span>ERROR: No Features Found</span>
