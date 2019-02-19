@@ -4,7 +4,9 @@ const generateURL = (type, params) => {
         return requestParams += `${param}=${params[param]}&`
     },'')
 
-    return `http://dotvlvweb/LocationServiceAPI/api/${type}?${requestParams}`;
+
+    return `${process.env.LocationServiceAPI}/api/${type}?${requestParams}`
+    //return `http://dotvlvweb/LocationServiceAPI/api/${type}?${requestParams}`;
 }
 
 

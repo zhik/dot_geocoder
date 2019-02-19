@@ -58,8 +58,14 @@
     "xlsx": "^0.14.1"
   },
   "scripts": {
-    "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
+    "start": "export NODE_BUILD=prod || set NODE_BUILD=prod && node scripts/start.js",
+    "start:dev": "export NODE_BUILD=dev || set NODE_BUILD=dev && node scripts/start.js",
+    "start:qa" : "export NODE_BUILD=qa || set NODE_BUILD=qa && node scripts/start.js",
+    "start:prod": "export NODE_BUILD=prod || set NODE_BUILD=prod && node scripts/start.js",
+    "build": "export NODE_BUILD=prod || set NODE_BUILD=prod && node scripts/build.js",
+    "build:dev": "export NODE_BUILD=dev || set NODE_BUILD=dev && node scripts/build.js",
+    "build:qa": "export NODE_BUILD=qa || set NODE_BUILD=qa && node scripts/build.js",
+    "build:prod": "export NODE_BUILD=prod || set NODE_BUILD=prod && node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom"
   },
   "jest": {
