@@ -17,6 +17,16 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ![example of dot web batch geocoder](example.gif)
 
+## change api endpoints
+
+edit `./config/api.js` , then run with corresponding command
+
+```bash
+npm run build:dev
+npm run build:qa
+npm run build:prod
+```
+
 ## notes
 
 This is my first full fledged react app. It was built originally for myself because I didn't want to use GeoSupport, and python scripts. It lacks good data practices like pubsub or redux. Everything is handled by the main app state, which is really messy...
