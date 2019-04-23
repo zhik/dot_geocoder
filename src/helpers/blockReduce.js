@@ -16,7 +16,7 @@ export function blockReduce(results, type) {
             if (result.hasOwnProperty('BlockFaceList')) {
                 await Promise.all(result.BlockFaceList.map(async (item, i) => {
                     if (item.AuxiliarySegmentIds) {
-                        const segmentID = item.AuxiliarySegmentIds.join(',');
+                        const segmentID = item.AuxiliarySegmentIds.join(',');;
                         const geojson = await queryGeocoder('LionSegmentConflation', {
                             segmentID
                         }).then(data => {
@@ -52,6 +52,10 @@ export function blockReduce(results, type) {
                             })
                         })
                         item.geojson = geojson;
+
+                        // temp fix to return all segments instead of one
+                        item.Segment1ID = item.SegmentID;
+                        item.SegmentID = segmentID; 
                     } else {
                         //make dummy geojson for INPUT DOES NOT DEFINE A STREET SEGMENT
                         const geometryType = {

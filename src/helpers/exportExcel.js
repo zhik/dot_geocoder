@@ -8,8 +8,8 @@ const exportExcel = (fileName, data) => {
     XLSX.utils.book_append_sheet(wb, ws);
 
     /* write workbook */
-    XLSX.write(wb, {bookType:'csv', bookSST:true, type: 'base64'})
-    XLSX.writeFile(wb, `${fileName}-gcd.csv`);
+    XLSX.write(wb, {bookType:'xlsx', bookSST:true, type: 'base64'})
+    XLSX.writeFile(wb, `${fileName}-geocoded.xlsx`);
 }
 
 export default exportExcel;
