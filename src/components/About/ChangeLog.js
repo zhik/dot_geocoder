@@ -3,7 +3,7 @@ import { List, Label, Header, Segment } from 'semantic-ui-react'
 
 const versions = {
     'Upcoming' : ['more custom error handling'],
-    'release v1.1c': ['ux fixes','added to manual'],
+    'release v1.1c': ['ux fixes','added to manual','fixed about:blank#blocked issue, now large shapefiles can be exported'],
     'release v1.1b' : ['added warning for segment level errors','shapefile will now only include features with geography, to avoid processing errors'],
     'release v1.1' : ['extended Block Stretch functions','fixing errors now saves','excel tab support'],
     'release v1.0 (10/11/18)' : ['bug fixes'],

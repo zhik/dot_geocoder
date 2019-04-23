@@ -1,7 +1,10 @@
 var zip = require('./zip');
+var saveAs = require('file-saver').saveAs;
 
-//To-do: add error case for JSZip fail redirect for download
+//fix to about:blank#blocked provided by Miroko https://github.com/mapbox/shp-write/pull/50
+
 module.exports = function(gj, options) {
-    var content = zip(gj, options);
-    window.location.href = 'data:application/zip;base64,' + content; //The current URL length limit in chrome is 2097152 characters
+    zip(gj, options).then(function(blob) { 
+        saveAs(blob, options.fileName + '.zip'); 
+    });
 };

@@ -5,7 +5,7 @@ var write = require('./write'),
 
 module.exports = function(gj, options) {
     var zip = new JSZip(),
-        layers = zip.folder(options && options.folder ? options.folder : 'layers');
+        layers = zip;
 
     [geojson.point(gj), geojson.line(gj), geojson.polygon(gj)]
         .forEach(function(l) {
@@ -27,11 +27,8 @@ module.exports = function(gj, options) {
         }
     });
 
-    var generateOptions = { compression:'STORE' };
-
-    if (!process.browser) {
-      generateOptions.type = 'nodebuffer';
-    }
-
-    return zip.generate(generateOptions);
+    return zip.generateAsync({
+        type: process.browser === undefined ? 'nodebuffer' : 'blob',
+        compression: 'DEFLATE'
+    });
 };

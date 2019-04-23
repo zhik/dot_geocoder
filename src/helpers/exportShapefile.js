@@ -7,7 +7,7 @@ export const exportShapefileDirectly = (fileName, geojson, epsg) => {
     //write to shp.zip
 
     const shp_options = {
-        folder: fileName,
+        fileName: fileName,
             types: {
                 point: fileName,
                 line: fileName
@@ -105,7 +105,7 @@ export const exportShapefile = (fileName, header, body, epsg) => {
     //write to shp.zip
 
     const shp_options = {
-        folder: fileName,
+        fileName: fileName,
             types: {
                 point: fileName
             },
