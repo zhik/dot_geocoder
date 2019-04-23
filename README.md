@@ -17,7 +17,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ![example of dot web batch geocoder](example.gif)
 
-## change api endpoints
+## changing api endpoints
 
 edit `./config/api.js` , then run with corresponding command
 
@@ -26,6 +26,10 @@ npm run build:dev
 npm run build:qa
 npm run build:prod
 ```
+
+## changing build url location
+
+If you want to change the build url location (e.g. http://dotqagisiis03/batch-geocoder/), go to line 17 of `./config/webpack.config.prod.js`
 
 ## notes
 

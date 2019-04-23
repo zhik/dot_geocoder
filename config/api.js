@@ -1,7 +1,7 @@
 const API_URLS = {
     'LocationServiceAPI': {
-        'dev': 'http://dotvlvweb/LocationServiceAPI',
-        'qa': 'http://dotvlvweb/LocationServiceAPI',
+        'dev': 'http://dotdev55iis10.dotdev.com/LocationServiceAPI',
+        'qa': 'http://dotqavlvweb01/LocationServiceAPI',
         'prod': 'http://dotvlvweb/LocationServiceAPI'
     }
 }
